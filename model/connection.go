@@ -28,7 +28,6 @@ func GetConnection() *gorm.DB {
 func SetupConnection(c DbTarget) (*gorm.DB, error) {
 	con := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True",
 		c.User, c.Password, c.Address, c.Database)
-	fmt.Println("Con:", con)
 	d, err := gorm.Open("mysql", con)
 	if err != nil {
 		return nil, err
