@@ -91,6 +91,7 @@ func setupRoute(e *echo.Echo) {
 	e.POST("/admin", controller.PostAdminLogin)
 
 	// Login area
+	e.GET("/admin/article", controller.GetAdminArticles)
 	e.GET("/admin/article/:id", controller.GetAdminArticle)
 	e.POST("/admin/article/:id", controller.PostAdminArticle)
 	e.DELETE("/admin/article/:id", controller.DeleteAdminArticle)
