@@ -3,23 +3,13 @@
 
     <div class="ui main text container">
 
-        <h1 class="ui header">Semantic UI Fixed Template</h1>
-        <h1>Hello World!</h1>
-        <p>{{"すし" | sushi}}</p>
+        <h1 class="ui header">Simple Blog</h1>
+        <p>Welcome my blog!</p>
 
-        <h1>{{.title}}</h1>
-        <p>{{.body}}</p>
-
-        <p>This is a basic fixed menu template using fixed size containers.</p>
-        <p>A text container is used for the main container, which is useful for single column layouts</p>
-        <img class="wireframe" src="https://semantic-ui.com/examples/assets/images/wireframe/media-paragraph.png">
-        <img class="wireframe" src="https://semantic-ui.com/examples/assets/images/wireframe/paragraph.png">
-        <img class="wireframe" src="https://semantic-ui.com/examples/assets/images/wireframe/paragraph.png">
-        <img class="wireframe" src="https://semantic-ui.com/examples/assets/images/wireframe/paragraph.png">
-        <img class="wireframe" src="https://semantic-ui.com/examples/assets/images/wireframe/paragraph.png">
-        <img class="wireframe" src="https://semantic-ui.com/examples/assets/images/wireframe/paragraph.png">
-        <img class="wireframe" src="https://semantic-ui.com/examples/assets/images/wireframe/paragraph.png">
+        {{range .articles}}
+            <h2><a href="/article/{{.ID}}">{{.Title}}</a></h2>
+            <p>{{.Body}}</p>
+        {{end}}
     </div>
-
 {{end}}
 

@@ -56,6 +56,7 @@ func main() {
 	setupRoute(e)
 
 	e.Logger.Fatal(e.Start(":8888"))
+	// defer e.Close()
 }
 
 func setupRender(e *echo.Echo) {
@@ -67,14 +68,8 @@ func setupRender(e *echo.Echo) {
 			// "partials/ad",
 		},
 		Funcs: template.FuncMap{
-			"sub": func(a, b int) int {
-				return a - b
-			},
 			"copy": func() string {
 				return time.Now().Format("2006")
-			},
-			"sushi": func(a string) string {
-				return "🍣" + a + "🍣"
 			},
 		},
 		DisableCache: true,
@@ -90,4 +85,5 @@ func setupRoute(e *echo.Echo)  {
 	e.GET("/", controller.GetIndex)
 	e.GET("/about", controller.GetAbout)
 	e.GET("/test", controller.GetTest)
+	e.GET("/article/:id", controller.GetArticle)
 }
