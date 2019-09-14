@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	github.com/foolin/goview v0.2.0 // indirect
+	github.com/jinzhu/gorm v1.9.10
 	github.com/labstack/echo/v4 v4.1.10
 	github.com/stretchr/objx v0.2.0 // indirect
 	golang.org/x/crypto v0.0.0-20190911031432-227b76d455e7 // indirect
