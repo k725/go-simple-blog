@@ -82,8 +82,17 @@ func setupMiddleware(e *echo.Echo) {
 }
 
 func setupRoute(e *echo.Echo)  {
+	// Public
 	e.GET("/", controller.GetIndex)
 	e.GET("/about", controller.GetAbout)
-	e.GET("/test", controller.GetTest)
 	e.GET("/article/:id", controller.GetArticle)
+
+	// Login
+	e.GET("/admin", controller.GetAdminLogin)
+	e.POST("/admin", controller.PostAdminLogin)
+
+	// Login area
+	e.GET("/admin/article/:id", controller.GetAdminArticle)
+	e.POST("/admin/article/:id", controller.PostAdminArticle)
+	e.DELETE("/admin/article/:id", controller.DeleteAdminArticle)
 }

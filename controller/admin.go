@@ -6,7 +6,7 @@ import (
 )
 
 func GetAdminLogin(c echo.Context) error {
-	return c.String(http.StatusOK, "GetAdminLogin")
+	return c.Render(http.StatusOK, "page/public/login", map[string]interface{}{})
 }
 
 func PostAdminLogin(c echo.Context) error {

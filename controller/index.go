@@ -18,7 +18,3 @@ func GetAbout(c echo.Context) error {
 		"title": "This About title",
 	})
 }
-
-func GetTest(c echo.Context) error {
-	return c.String(http.StatusOK, "test")
-}
