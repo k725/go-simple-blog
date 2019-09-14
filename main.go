@@ -45,7 +45,6 @@ func main() {
 	//db.NewRecord(test)
 	//db.Create(&test)
 
-
 	e := echo.New()
 
 	e.Debug = true
@@ -81,7 +80,7 @@ func setupMiddleware(e *echo.Echo) {
 	e.Use(middleware.Recover())
 }
 
-func setupRoute(e *echo.Echo)  {
+func setupRoute(e *echo.Echo) {
 	// Public
 	e.GET("/", controller.GetIndex)
 	e.GET("/about", controller.GetAbout)

@@ -3,10 +3,10 @@ package config
 import "os"
 
 var (
-	EnvDBAddress string
+	EnvDBAddress  string
 	EnvDBUserName string
 	EnvDBPassword string
-	EnvDBName string
+	EnvDBName     string
 )
 
 func init() {

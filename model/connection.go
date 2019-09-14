@@ -7,8 +7,8 @@ import (
 )
 
 type DbTarget struct {
-	Address string
-	User string
+	Address  string
+	User     string
 	Password string
 	Database string
 }
