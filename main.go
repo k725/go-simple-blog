@@ -79,6 +79,9 @@ func setupRender(e *echo.Echo) {
 			"eqTime": func(t1, t2 time.Time) bool {
 				return t1.Equal(t2)
 			},
+			"safeHTML": func(t string) template.HTML {
+				return template.HTML(t)
+			},
 		},
 		DisableCache: true,
 	})

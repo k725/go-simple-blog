@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/k725/go-simple-blog/model"
+	"github.com/k725/go-simple-blog/service/markdown"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"strconv"
@@ -14,6 +15,7 @@ func GetArticle(c echo.Context) error {
 	}
 
 	a := model.GetArticle(id)
+	a.Body = markdown.Render(a.Body)
 	return c.Render(http.StatusOK, "page/public/article", map[string]interface{}{
 		"article": a,
 	})
