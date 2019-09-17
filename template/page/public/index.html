@@ -17,7 +17,7 @@
                             <span>Created: {{.CreatedAt|dateYYYYMMDD}}</span>
                         </div>
                         <div class="description">
-                            <p>{{.Body}}</p>
+                            <p>{{trimChars .Body 64}}</p>
                         </div>
                         <div class="extra">
                             <a href="/article/{{.ID}}" class="ui right floated primary button">

@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"html/template"
 	"time"
+	"unicode/utf8"
 )
 
 func main() {
@@ -78,6 +79,12 @@ func setupRender(e *echo.Echo) {
 			},
 			"eqTime": func(t1, t2 time.Time) bool {
 				return t1.Equal(t2)
+			},
+			"trimChars": func(t1 string, len int) string {
+				if utf8.RuneCountInString(t1) <= len {
+					return t1
+				}
+				return string([]rune(t1)[0:len])
 			},
 		},
 		DisableCache: true,
