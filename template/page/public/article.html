@@ -27,7 +27,7 @@
             </div>
         </div>
         <div class="article-body">
-            <p>{{.article.Body}}</p>
+            {{.article.Body|safeHTML}}
         </div>
     </div>
 {{end}}

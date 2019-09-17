@@ -6,6 +6,8 @@ require (
 	github.com/foolin/goview v0.2.0
 	github.com/jinzhu/gorm v1.9.10
 	github.com/labstack/echo/v4 v4.1.10
+	github.com/russross/blackfriday/v2 v2.0.1
+	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/stretchr/objx v0.2.0 // indirect
 	golang.org/x/crypto v0.0.0-20190911031432-227b76d455e7 // indirect
 	golang.org/x/net v0.0.0-20190912160710-24e19bdeb0f2 // indirect

@@ -86,6 +86,9 @@ func setupRender(e *echo.Echo) {
 				}
 				return string([]rune(t1)[0:len])
 			},
+			"safeHTML": func(t string) template.HTML {
+				return template.HTML(t)
+			},
 		},
 		DisableCache: true,
 	})
