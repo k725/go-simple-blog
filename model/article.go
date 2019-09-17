@@ -21,7 +21,7 @@ func GetArticle(id int) Article {
 // @todo fix
 func GetAllArticles() []Article {
 	var a []Article
-	GetConnection().Find(&a)
+	GetConnection().Order("created_at desc").Find(&a)
 	return a
 }
 
