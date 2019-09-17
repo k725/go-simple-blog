@@ -6,11 +6,28 @@
         <p>Welcome my blog!</p>
 
         <h1 class="ui dividing header">{{.article.Title}}</h1>
-        <p>Created: {{.article.CreatedAt}}</p>
-        <p>Updated: {{.article.UpdatedAt}}</p>
-        <p>Author: {{.article.Author}}</p>
-        <p>Category: {{.article.Category}}</p>
-        <p>{{.article.Body}}</p>
+
+        <div class="ui equal width grid">
+            <div class="column">
+                <div class="ui">
+                    <p>
+                        <a href="/category/{{.article.Category}}" class="ui tag label">{{.article.CategoryName}}</a><br>
+                        Author: {{.article.Author}}
+                    </p>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="ui">
+                    Created: {{.article.CreatedAt|dateYYYYMMDDHHmm}}
+                    {{if not (eqTime .article.CreatedAt .article.UpdatedAt)}}
+                        <br>Updated: {{.article.UpdatedAt|dateYYYYMMDDHHmm}}
+                    {{end}}
+                </div>
+            </div>
+        </div>
+        <div class="article-body">
+            <p>{{.article.Body}}</p>
+        </div>
     </div>
 {{end}}
-

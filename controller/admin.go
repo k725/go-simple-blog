@@ -37,8 +37,8 @@ func GetAdminNewArticle(c echo.Context) error {
 
 func PostAdminNewArticle(c echo.Context) error {
 	err := model.InsertArticle(model.Article{
-		Title:    c.FormValue("title"),
-		Body:     c.FormValue("body"),
+		Title: c.FormValue("title"),
+		Body:  c.FormValue("body"),
 	})
 	if err != nil {
 		return nil
@@ -64,11 +64,11 @@ func PostAdminArticle(c echo.Context) error {
 		return err
 	}
 	err = model.UpdateArticle(model.Article{
-		Model:    gorm.Model{
-			ID:        uint(id),
+		Model: gorm.Model{
+			ID: uint(id),
 		},
-		Title:    c.FormValue("title"),
-		Body:     c.FormValue("body"),
+		Title: c.FormValue("title"),
+		Body:  c.FormValue("body"),
 	})
 	if err != nil {
 		return nil

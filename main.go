@@ -73,6 +73,12 @@ func setupRender(e *echo.Echo) {
 			"dateYYYYMMDD": func(t time.Time) string {
 				return t.Format("2006/01/02")
 			},
+			"dateYYYYMMDDHHmm": func(t time.Time) string {
+				return t.Format("2006/01/02 15:04")
+			},
+			"eqTime": func(t1, t2 time.Time) bool {
+				return t1.Equal(t2)
+			},
 		},
 		DisableCache: true,
 	})
@@ -88,6 +94,7 @@ func setupRoute(e *echo.Echo) {
 	e.GET("/", controller.GetIndex)
 	e.GET("/about", controller.GetAbout)
 	e.GET("/article/:id", controller.GetArticle)
+	e.GET("/category/:id", controller.GetCategory)
 
 	// Login
 	e.GET("/admin", controller.GetAdminLogin)

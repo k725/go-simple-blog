@@ -12,16 +12,19 @@
                         <img src="https://semantic-ui.com/images/wireframe/image.png">
                     </div>
                     <div class="content">
-                        <a href="/article/{{.ID}}" class="header">{{.Title}}</a>
+                        <p class="header">{{.Title}}</p>
                         <div class="meta">
-                            <p>Category: <a class="ui label">日記</a></p>
+                            <span>Created: {{.CreatedAt|dateYYYYMMDD}}</span>
                         </div>
                         <div class="description">
                             <p>{{.Body}}</p>
                         </div>
                         <div class="extra">
-                            <p>Author: あああ</p>
-                            <p>Created: {{.CreatedAt|dateYYYYMMDD}}</p>
+                            <a href="/article/{{.ID}}" class="ui right floated primary button">
+                                Read more
+                                <i class="right chevron icon"></i>
+                            </a>
+                            <a href="/category/{{.Category}}" class="ui tag label">{{.CategoryName}}</a>
                         </div>
                     </div>
                 </div>

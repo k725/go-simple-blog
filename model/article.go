@@ -10,18 +10,47 @@ type Article struct {
 	Author   int    `gorm:"not null"`
 }
 
+type ArticleFull struct {
+	Article
+	CategoryName string `gorm:"column:categoryName"`
+}
+
 // GetArticle ...
-func GetArticle(id int) Article {
-	var a Article
-	GetConnection().Where("id = ?", id).First(&a)
+func GetArticle(id int) ArticleFull {
+	var a ArticleFull
+	GetConnection().
+		Table("articles").
+		Select("`articles`.*, categories.name as categoryName").
+		Joins("LEFT JOIN categories ON articles.category = categories.id").
+		Order("created_at desc").
+		Where("articles.id = ?", id).
+		First(&a)
 	return a
 }
 
 // GetAllArticles ...
 // @todo fix
-func GetAllArticles() []Article {
-	var a []Article
-	GetConnection().Order("created_at desc").Find(&a)
+func GetAllArticles() []ArticleFull {
+	var a []ArticleFull
+	GetConnection().
+		Table("articles").
+		Select("`articles`.*, categories.name as categoryName").
+		Joins("LEFT JOIN categories ON articles.category = categories.id").
+		Order("created_at desc").
+		Scan(&a)
+	return a
+}
+
+// GetArticlesByCategory ...
+func GetArticlesByCategory(id int) []ArticleFull {
+	var a []ArticleFull
+	GetConnection().
+		Table("articles").
+		Select("`articles`.*, categories.name as categoryName").
+		Joins("LEFT JOIN categories ON articles.category = categories.id").
+		Order("created_at desc").
+		Where("category = ?", id).
+		Scan(&a)
 	return a
 }
 
