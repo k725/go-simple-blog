@@ -2,7 +2,14 @@
     {{include "parts/header_navigation"}}
 
     <div class="ui main text container">
-        <h2>{{.article.Title}}</h2>
+        <h1 class="ui header">Simple Blog</h1>
+        <p>Welcome my blog!</p>
+
+        <h1 class="ui dividing header">{{.article.Title}}</h1>
+        <p>Created: {{.article.CreatedAt}}</p>
+        <p>Updated: {{.article.UpdatedAt}}</p>
+        <p>Author: {{.article.Author}}</p>
+        <p>Category: {{.article.Category}}</p>
         <p>{{.article.Body}}</p>
     </div>
 {{end}}

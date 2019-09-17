@@ -2,14 +2,31 @@
     {{include "parts/header_navigation"}}
 
     <div class="ui main text container">
-
         <h1 class="ui header">Simple Blog</h1>
         <p>Welcome my blog!</p>
 
-        {{range .articles}}
-            <h2><a href="/article/{{.ID}}">{{.Title}}</a></h2>
-            <p>{{.Body}}</p>
-        {{end}}
+        <div class="ui divided items">
+            {{range .articles}}
+                <div class="item">
+                    <div class="image">
+                        <img src="https://semantic-ui.com/images/wireframe/image.png">
+                    </div>
+                    <div class="content">
+                        <a href="/article/{{.ID}}" class="header">{{.Title}}</a>
+                        <div class="meta">
+                            <p>Category: <a class="ui label">日記</a></p>
+                        </div>
+                        <div class="description">
+                            <p>{{.Body}}</p>
+                        </div>
+                        <div class="extra">
+                            <p>Author: あああ</p>
+                            <p>Created: {{.CreatedAt}}</p>
+                        </div>
+                    </div>
+                </div>
+            {{end}}
+        </div>
     </div>
 
     {{include "parts/footer_navigation"}}
