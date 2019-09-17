@@ -24,3 +24,14 @@ func GetAllArticles() []Article {
 	GetConnection().Find(&a)
 	return a
 }
+
+func InsertArticle(a Article) error {
+	c := GetConnection()
+	c.NewRecord(a)
+	return c.Create(&a).Error
+}
+
+func UpdateArticle(a Article) error {
+	c := GetConnection()
+	return c.Model(&a).Updates(a).Error
+}

@@ -1,0 +1,9 @@
+{{define "content"}}
+    <a href="/admin/article/new">Create</a>
+    {{range .articles}}
+        <ul>
+            <li><a href="/admin/article/edit/{{.ID}}">{{.Title}}</a></li>
+        </ul>
+    {{end}}
+{{end}}
+
