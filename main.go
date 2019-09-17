@@ -70,6 +70,9 @@ func setupRender(e *echo.Echo) {
 			"copy": func() string {
 				return time.Now().Format("2006")
 			},
+			"dateYYYYMMDD": func(t time.Time) string {
+				return t.Format("2006/01/02")
+			},
 		},
 		DisableCache: true,
 	})
