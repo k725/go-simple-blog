@@ -15,6 +15,6 @@ func GetArticle(c echo.Context) error {
 
 	a := model.GetArticle(id)
 	return c.Render(http.StatusOK, "page/public/article", map[string]interface{}{
-		"articles": a,
+		"article": a,
 	})
 }
