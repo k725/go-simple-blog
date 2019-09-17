@@ -4,8 +4,8 @@ import "github.com/jinzhu/gorm"
 
 type Article struct {
 	gorm.Model
-	Title    string `gorm:"not null"`
-	Body     string `gorm:"not null"`
+	Title    string `gorm:"not null" sql:"type:text;"`
+	Body     string `gorm:"not null" sql:"type:text;"`
 	Category int    `gorm:"not null"`
 	Author   int    `gorm:"not null"`
 }
