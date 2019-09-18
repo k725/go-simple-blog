@@ -39,15 +39,6 @@ func main() {
 		&model.Category{},
 	)
 
-	//test := model.Article{
-	//	Title:    "日記",
-	//	Body:     "今日は晴れてた🌞",
-	//	Category: 0,
-	//	Author:   0,
-	//}
-	//db.NewRecord(test)
-	//db.Create(&test)
-
 	e := echo.New()
 
 	con := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True", t.User, t.Password, t.Address, t.Database)

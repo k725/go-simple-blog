@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
+	"github.com/k725/go-simple-blog/service/sess"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"strconv"
@@ -17,6 +18,18 @@ func PostAdminLogin(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+
+	v := map[string]interface{}{
+		"login": "ok",
+		"true": true,
+		"false": false,
+		"nil": nil,
+		"int": 123,
+	}
+	if err := sess.SaveSession(c, v); err != nil {
+		return err
+	}
+
 	// @todo Unimplemented
 	if uv.Get("user_id") != "admin" || uv.Get("password") != "dolphin" {
 		return c.String(http.StatusForbidden, "Missing auth")
@@ -25,6 +38,8 @@ func PostAdminLogin(c echo.Context) error {
 }
 
 func GetAdminArticles(c echo.Context) error {
+	// s, _ := sess.GetSession(c)
+
 	a := model.GetAllArticles()
 	return c.Render(http.StatusOK, "page/admin/index", map[string]interface{}{
 		"articles": a,
