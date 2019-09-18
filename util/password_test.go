@@ -7,8 +7,8 @@ import (
 )
 
 func TestIsValidPassword(t *testing.T) {
-	tests := []struct{
-		Input string
+	tests := []struct {
+		Input  string
 		Result bool
 	}{
 		{
@@ -39,20 +39,20 @@ func TestIsValidPassword(t *testing.T) {
 }
 
 func TestPasswordHash(t *testing.T) {
-	tests := []struct{
-		Input string
+	tests := []struct {
+		Input     string
 		ResultLen int
-		Error error
+		Error     error
 	}{
 		{
-			Input:  "dolphin",
+			Input:     "dolphin",
 			ResultLen: 60,
-			Error: nil,
+			Error:     nil,
 		},
 		{
-			Input:  "password",
+			Input:     "password",
 			ResultLen: 60,
-			Error: nil,
+			Error:     nil,
 		},
 	}
 	for _, test := range tests {
@@ -67,25 +67,25 @@ func TestPasswordHash(t *testing.T) {
 }
 
 func TestPasswordVerify(t *testing.T) {
-	tests := []struct{
+	tests := []struct {
 		InputHash string
 		InputPass string
-		Result error
+		Result    error
 	}{
 		{
 			InputHash: "$2a$10$RIogJ.mUYubmyxGXVXsb8ugPiiwhu6hkDKv5z5VJPELDHyin6ZtWq",
 			InputPass: "dolphin",
-			Result: nil,
+			Result:    nil,
 		},
 		{
 			InputHash: "$2a$10$RIogJ.mUYubmyxGXVXsb8ugPiiwhu6hkDKv5z5VJPELDHyin6ZtWq",
 			InputPass: "foobar",
-			Result: errors.New("crypto/bcrypt: hashedPassword is not the hash of the given password"),
+			Result:    errors.New("crypto/bcrypt: hashedPassword is not the hash of the given password"),
 		},
 		{
 			InputHash: "invalid",
 			InputPass: "",
-			Result: errors.New("crypto/bcrypt: hashedSecret too short to be a bcrypted password"),
+			Result:    errors.New("crypto/bcrypt: hashedSecret too short to be a bcrypted password"),
 		},
 	}
 	for _, test := range tests {

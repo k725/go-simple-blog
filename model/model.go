@@ -6,7 +6,6 @@ func SetupDB() {
 	setupInitialUser()
 }
 
-
 func setupInitialUser() {
 	p, err := util.PasswordHash("passw0rd")
 	if err != nil {
