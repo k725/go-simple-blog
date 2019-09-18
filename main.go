@@ -1,13 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"github.com/foolin/goview"
 	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/k725/go-simple-blog/config"
 	"github.com/k725/go-simple-blog/controller"
 	"github.com/k725/go-simple-blog/model"
+	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/srinathgs/mysqlstore"
 	"html/template"
 	"time"
 	"unicode/utf8"
@@ -37,16 +40,17 @@ func main() {
 		&model.Category{},
 	)
 
-	//test := model.Article{
-	//	Title:    "日記",
-	//	Body:     "今日は晴れてた🌞",
-	//	Category: 0,
-	//	Author:   0,
-	//}
-	//db.NewRecord(test)
-	//db.Create(&test)
-
 	e := echo.New()
+
+	con := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True", t.User, t.Password, t.Address, t.Database)
+	store, err := mysqlstore.NewMySQLStore(con, "session", "/", 3600, []byte("secret"))
+	if err != nil {
+		panic(err)
+	}
+
+	defer store.Close()
+
+	e.Use(session.Middleware(store))
 
 	e.Debug = true
 	e.Static("/", "public")
