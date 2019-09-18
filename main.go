@@ -40,6 +40,8 @@ func main() {
 		&model.Category{},
 	)
 
+	// model.SetupDB()
+
 	e := echo.New()
 
 	con := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True", t.User, t.Password, t.Address, t.Database)

@@ -4,7 +4,15 @@ import "github.com/jinzhu/gorm"
 
 type User struct {
 	gorm.Model
-	UserID   string `gorm:"not null"`
+	UserID   string `gorm:"size:16;unique_index;not null"`
 	Password string `gorm:"not null"`
 	Name     string `gorm:"not null"`
+}
+
+func GetUserByUserId(userId string) User {
+	var u User
+	GetConnection().
+		Where("user_id = ?", userId).
+		First(&u)
+	return u
 }

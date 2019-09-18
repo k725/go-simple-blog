@@ -1,9 +1,11 @@
 package controller
 
 import (
+	"errors"
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/k725/go-simple-blog/service/sess"
+	"github.com/k725/go-simple-blog/util"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"strconv"
@@ -19,6 +21,18 @@ func PostAdminLogin(c echo.Context) error {
 		return err
 	}
 
+	id := uv.Get("user_id")
+	pw := uv.Get("password")
+	if id == "" || pw == "" {
+		return errors.New("username or password are empty")
+	}
+	user := model.GetUserByUserId(id)
+
+	if err := util.PasswordVerify(user.Password, pw); err != nil {
+		c.Logger().Error(err)
+		return c.Redirect(http.StatusFound, "/admin")
+	}
+
 	v := map[string]interface{}{
 		"login": "ok",
 		"true": true,
@@ -28,11 +42,6 @@ func PostAdminLogin(c echo.Context) error {
 	}
 	if err := sess.SaveSession(c, v); err != nil {
 		return err
-	}
-
-	// @todo Unimplemented
-	if uv.Get("user_id") != "admin" || uv.Get("password") != "dolphin" {
-		return c.String(http.StatusForbidden, "Missing auth")
 	}
 	return c.Redirect(http.StatusFound, "/admin/article")
 }
