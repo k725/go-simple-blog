@@ -13,6 +13,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/srinathgs/mysqlstore"
 	"html/template"
+	"net/http"
 	"time"
 	"unicode/utf8"
 )
@@ -139,6 +140,11 @@ func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc {
 		}
 		c.Logger().Debug(fmt.Sprintf("%v", s.Values))
 		c.Logger().Debug("Before")
+
+		if s.Values["login"] != "ok" {
+			return c.Redirect(http.StatusFound, "/admin/login")
+		}
+
 		err = next(c)
 		c.Logger().Debug("After")
 		return err
