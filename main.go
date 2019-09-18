@@ -7,6 +7,7 @@ import (
 	"github.com/k725/go-simple-blog/config"
 	"github.com/k725/go-simple-blog/controller"
 	"github.com/k725/go-simple-blog/model"
+	"github.com/k725/go-simple-blog/service/sess"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -113,15 +114,33 @@ func setupRoute(e *echo.Echo) {
 	e.GET("/category/:id", controller.GetCategory)
 
 	// Login
-	e.GET("/admin", controller.GetAdminLogin)
-	e.POST("/admin", controller.PostAdminLogin)
+	e.GET("/admin/login", controller.GetAdminLogin)
+	e.POST("/admin/login", controller.PostAdminLogin)
 
 	// Login area
-	e.GET("/admin/article", controller.GetAdminArticles)
-	e.GET("/admin/article/new", controller.GetAdminNewArticle)
-	e.POST("/admin/article/new", controller.PostAdminNewArticle)
+	g := e.Group("/admin")
+	g.Use(ServerHeader)
 
-	e.GET("/admin/article/edit/:id", controller.GetAdminArticle)
-	e.POST("/admin/article/edit/:id", controller.PostAdminArticle)
-	e.DELETE("/admin/article/edit/:id", controller.DeleteAdminArticle)
+	g.GET("/article", controller.GetAdminArticles)
+	g.GET("/article/new", controller.GetAdminNewArticle)
+	g.POST("/article/new", controller.PostAdminNewArticle)
+
+	g.GET("/article/edit/:id", controller.GetAdminArticle)
+	g.POST("/article/edit/:id", controller.PostAdminArticle)
+	g.DELETE("/article/edit/:id", controller.DeleteAdminArticle)
+}
+
+func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		s, err := sess.GetSession(c)
+		if err != nil {
+			// @todo
+			return err
+		}
+		c.Logger().Debug(fmt.Sprintf("%v", s.Values))
+		c.Logger().Debug("Before")
+		err = next(c)
+		c.Logger().Debug("After")
+		return err
+	}
 }

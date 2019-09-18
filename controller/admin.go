@@ -30,7 +30,7 @@ func PostAdminLogin(c echo.Context) error {
 
 	if err := util.PasswordVerify(user.Password, pw); err != nil {
 		c.Logger().Error(err)
-		return c.Redirect(http.StatusFound, "/admin")
+		return c.Redirect(http.StatusFound, "/admin/login")
 	}
 
 	v := map[string]interface{}{
