@@ -12,6 +12,13 @@ import (
 )
 
 func GetAdminLogin(c echo.Context) error {
+	s, err := sess.GetSession(c)
+	if err != nil {
+		return err
+	}
+	if s.Values["login"] == "ok" {
+		return c.Redirect(http.StatusFound, "/admin/article")
+	}
 	return c.Render(http.StatusOK, "page/public/login", map[string]interface{}{})
 }
 
