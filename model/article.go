@@ -13,9 +13,9 @@ type Article struct {
 type ArticleFull struct {
 	Article
 	CategoryName string `gorm:"column:categoryName"`
-	CategoryID int `gorm:"column:categoryId"`
-	UserName string `gorm:"column:userName"`
-	UserID string `gorm:"column:userId"`
+	CategoryID   int    `gorm:"column:categoryId"`
+	UserName     string `gorm:"column:userName"`
+	UserID       string `gorm:"column:userId"`
 }
 
 func fullArticleQueryBuilder() *gorm.DB {

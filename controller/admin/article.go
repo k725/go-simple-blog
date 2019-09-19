@@ -20,9 +20,9 @@ func GetAdminArticles(c echo.Context) error {
 func GetAdminNewArticle(c echo.Context) error {
 	ca := model.GetAllCategories()
 	return c.Render(http.StatusOK, "page/admin/edit", map[string]interface{}{
-		"editable": false,
+		"editable":   false,
 		"categories": ca,
-		"article": model.ArticleFull{},
+		"article":    model.ArticleFull{},
 	})
 }
 
@@ -50,10 +50,10 @@ func PostAdminNewArticle(c echo.Context) error {
 	u := model.GetUserByUserId(uis)
 
 	err = model.InsertArticle(model.Article{
-		Title: c.FormValue("title"),
-		Body:  c.FormValue("body"),
+		Title:    c.FormValue("title"),
+		Body:     c.FormValue("body"),
 		Category: ca,
-		Author: int(u.ID),
+		Author:   int(u.ID),
 	})
 	if err != nil {
 		return nil
@@ -69,8 +69,8 @@ func GetAdminArticle(c echo.Context) error {
 	ca := model.GetAllCategories()
 	a := model.GetArticle(id)
 	return c.Render(http.StatusOK, "page/admin/article", map[string]interface{}{
-		"article": a,
-		"editable": true,
+		"article":    a,
+		"editable":   true,
 		"categories": ca,
 	})
 }
@@ -91,8 +91,8 @@ func PostAdminArticle(c echo.Context) error {
 		Model: gorm.Model{
 			ID: uint(id),
 		},
-		Title: c.FormValue("title"),
-		Body:  c.FormValue("body"),
+		Title:    c.FormValue("title"),
+		Body:     c.FormValue("body"),
 		Category: ca,
 	})
 	if err != nil {
