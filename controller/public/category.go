@@ -14,8 +14,11 @@ func GetCategory(c echo.Context) error {
 	}
 
 	a := model.GetArticlesByCategory(id)
+	ca := model.GetAllCategories()
+
 	// @todo temp template
 	return c.Render(http.StatusOK, "page/public/index", map[string]interface{}{
 		"articles": a,
+		"categories": ca,
 	})
 }

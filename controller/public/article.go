@@ -15,8 +15,11 @@ func GetArticle(c echo.Context) error {
 	}
 
 	a := model.GetArticle(id)
+	ca := model.GetAllCategories()
+
 	a.Body = markdown.Render(a.Body)
 	return c.Render(http.StatusOK, "page/public/article", map[string]interface{}{
 		"article": a,
+		"categories": ca,
 	})
 }

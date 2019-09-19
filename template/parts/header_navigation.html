@@ -7,21 +7,11 @@
         <a href="/" class="item">Home</a>
         <a href="/about" class="item">About</a>
         <div class="ui simple dropdown item">
-            Dropdown <i class="dropdown icon"></i>
+            Categories <i class="dropdown icon"></i>
             <div class="menu">
-                <a class="item" href="#">Link Item</a>
-                <a class="item" href="#">Link Item</a>
-                <div class="divider"></div>
-                <div class="header">Header Item</div>
-                <div class="item">
-                    <i class="dropdown icon"></i>
-                    Sub Menu
-                    <div class="menu">
-                        <a class="item" href="#">Link Item</a>
-                        <a class="item" href="#">Link Item</a>
-                    </div>
-                </div>
-                <a class="item" href="#">Link Item</a>
+                {{range .categories}}
+                    <a class="item" href="/category/{{ .ID }}">{{ .Name }}</a>
+                {{end}}
             </div>
         </div>
     </div>
