@@ -20,11 +20,11 @@
         </select>
     </div>
     <div class="ui right floated buttons">
-        <button class="positive ui button" type="submit">
+        <button class="positive ui button" type="submit" name="mode" value="default">
             <i class="save icon"></i> Save
         </button>
         {{if .editable}}
-            <button class="negative ui button" type="submit" onclick="return confirm('Are you sure?')">
+            <button class="negative ui button" type="submit" name="mode" value="delete" onclick="return confirm('Are you sure?')">
                 <i class="trash icon"></i> Delete
             </button>
         {{end}}

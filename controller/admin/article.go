@@ -80,6 +80,15 @@ func PostAdminArticle(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+
+	mode := c.FormValue("mode")
+	if mode == "delete" {
+		if err := model.DeleteArticle(id); err != nil {
+			return err
+		}
+		return c.Redirect(http.StatusFound, "/admin/article")
+	}
+
 	ca, err := strconv.Atoi(c.FormValue("category"))
 	if err != nil {
 		return err

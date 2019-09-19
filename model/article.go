@@ -45,6 +45,7 @@ func GetArticle(id int) ArticleFull {
 func GetAllArticles() []ArticleFull {
 	var a []ArticleFull
 	fullArticleQueryBuilder().
+		Where("articles.deleted_at IS NULL").
 		Scan(&a)
 	return a
 }
@@ -54,6 +55,7 @@ func GetArticlesByCategory(id int) []ArticleFull {
 	var a []ArticleFull
 	fullArticleQueryBuilder().
 		Where("category = ?", id).
+		Where("articles.deleted_at IS NULL").
 		Scan(&a)
 	return a
 }
@@ -67,4 +69,9 @@ func InsertArticle(a Article) error {
 func UpdateArticle(a Article) error {
 	c := GetConnection()
 	return c.Model(&a).Updates(a).Error
+}
+
+func DeleteArticle(id int) error {
+	c := GetConnection()
+	return c.Where("id = ?", id).Delete(&Article{}).Error
 }
