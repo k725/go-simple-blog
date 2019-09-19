@@ -13,6 +13,7 @@ type Article struct {
 type ArticleFull struct {
 	Article
 	CategoryName string `gorm:"column:categoryName"`
+	CategoryID int `gorm:"column:categoryId"`
 }
 
 // GetArticle ...
@@ -20,7 +21,7 @@ func GetArticle(id int) ArticleFull {
 	var a ArticleFull
 	GetConnection().
 		Table("articles").
-		Select("`articles`.*, categories.name as categoryName").
+		Select("`articles`.*, categories.name as categoryName, categories.id as categoryId").
 		Joins("LEFT JOIN categories ON articles.category = categories.id").
 		Order("created_at desc").
 		Where("articles.id = ?", id).

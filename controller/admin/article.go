@@ -16,15 +16,23 @@ func GetAdminArticles(c echo.Context) error {
 }
 
 func GetAdminNewArticle(c echo.Context) error {
+	ca := model.GetAllCategories()
 	return c.Render(http.StatusOK, "page/admin/edit", map[string]interface{}{
 		"editable": false,
+		"categories": ca,
+		"article": model.ArticleFull{},
 	})
 }
 
 func PostAdminNewArticle(c echo.Context) error {
-	err := model.InsertArticle(model.Article{
+	cat, err := strconv.Atoi(c.FormValue("category"))
+	if err != nil {
+		return err
+	}
+	err = model.InsertArticle(model.Article{
 		Title: c.FormValue("title"),
 		Body:  c.FormValue("body"),
+		Category: cat,
 	})
 	if err != nil {
 		return nil
@@ -37,16 +45,21 @@ func GetAdminArticle(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-
+	ca := model.GetAllCategories()
 	a := model.GetArticle(id)
 	return c.Render(http.StatusOK, "page/admin/article", map[string]interface{}{
 		"article": a,
 		"editable": true,
+		"categories": ca,
 	})
 }
 
 func PostAdminArticle(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		return err
+	}
+	ca, err := strconv.Atoi(c.FormValue("category"))
 	if err != nil {
 		return err
 	}
@@ -56,6 +69,7 @@ func PostAdminArticle(c echo.Context) error {
 		},
 		Title: c.FormValue("title"),
 		Body:  c.FormValue("body"),
+		Category: ca,
 	})
 	if err != nil {
 		return nil

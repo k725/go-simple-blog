@@ -9,9 +9,14 @@
     </div>
     <div class="field">
         <label>Category</label>
-        <select name="category">
-            <option value="0">hoge</option>
-            <option value="1">fuga</option>
+        <select name="category" required>
+            {{range .categories}}
+                {{if eq .ID $.article.CategoryID}}
+                    <option value="{{ .ID }}" selected>{{ .Name }}</option>
+                {{else}}
+                    <option value="{{ .ID }}">{{ .Name }}</option>
+                {{end}}
+            {{end}}
         </select>
     </div>
     <div class="ui right floated buttons">

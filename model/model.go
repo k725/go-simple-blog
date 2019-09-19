@@ -1,12 +1,26 @@
 package model
 
-import "github.com/k725/go-simple-blog/util"
+import (
+	"github.com/jinzhu/gorm"
+	"github.com/k725/go-simple-blog/util"
+)
 
 func SetupDB() {
-	setupInitialUser()
+	c := GetConnection()
+
+	setupInitialUser(c)
+	setupCategory(c)
 }
 
-func setupInitialUser() {
+func setupCategory(con *gorm.DB) {
+	a := Category{
+		Name: "未設定",
+	}
+	con.NewRecord(a)
+	con.Create(&a)
+}
+
+func setupInitialUser(con *gorm.DB) {
 	p, err := util.PasswordHash("passw0rd")
 	if err != nil {
 		panic(err)
@@ -16,8 +30,6 @@ func setupInitialUser() {
 		Password: p,
 		Name:     "あどみん",
 	}
-
-	c := GetConnection()
-	c.NewRecord(a)
-	c.Create(&a)
+	con.NewRecord(a)
+	con.Create(&a)
 }
