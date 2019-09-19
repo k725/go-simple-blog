@@ -1,4 +1,4 @@
-package controller
+package public
 
 import (
 	"github.com/k725/go-simple-blog/model"

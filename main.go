@@ -5,7 +5,8 @@ import (
 	"github.com/foolin/goview"
 	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/k725/go-simple-blog/config"
-	"github.com/k725/go-simple-blog/controller"
+	"github.com/k725/go-simple-blog/controller/admin"
+	"github.com/k725/go-simple-blog/controller/public"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/k725/go-simple-blog/service/sess"
 	"github.com/labstack/echo-contrib/session"
@@ -109,26 +110,26 @@ func setupMiddleware(e *echo.Echo) {
 
 func setupRoute(e *echo.Echo) {
 	// Public
-	e.GET("/", controller.GetIndex)
-	e.GET("/about", controller.GetAbout)
-	e.GET("/article/:id", controller.GetArticle)
-	e.GET("/category/:id", controller.GetCategory)
+	e.GET("/", public.GetIndex)
+	e.GET("/about", public.GetAbout)
+	e.GET("/article/:id", public.GetArticle)
+	e.GET("/category/:id", public.GetCategory)
 
 	// Login
-	e.GET("/admin/login", controller.GetAdminLogin)
-	e.POST("/admin/login", controller.PostAdminLogin)
+	e.GET("/admin/login", public.GetAdminLogin)
+	e.POST("/admin/login", public.PostAdminLogin)
 
 	// Login area
 	g := e.Group("/admin")
 	g.Use(ServerHeader)
-	g.GET("/logout", controller.GetAdminLogout)
-	g.GET("/article", controller.GetAdminArticles)
-	g.GET("/article/new", controller.GetAdminNewArticle)
-	g.POST("/article/new", controller.PostAdminNewArticle)
+	g.GET("/logout", admin.GetAdminLogout)
+	g.GET("/article", admin.GetAdminArticles)
+	g.GET("/article/new", admin.GetAdminNewArticle)
+	g.POST("/article/new", admin.PostAdminNewArticle)
 
-	g.GET("/article/edit/:id", controller.GetAdminArticle)
-	g.POST("/article/edit/:id", controller.PostAdminArticle)
-	g.DELETE("/article/edit/:id", controller.DeleteAdminArticle)
+	g.GET("/article/edit/:id", admin.GetAdminArticle)
+	g.POST("/article/edit/:id", admin.PostAdminArticle)
+	g.DELETE("/article/edit/:id", admin.DeleteAdminArticle)
 }
 
 func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc {
@@ -141,7 +142,7 @@ func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc {
 		c.Logger().Debug(fmt.Sprintf("%v", s.Values))
 		c.Logger().Debug("Before")
 
-		if s.Values["login"] != "ok" {
+		if _, ok := s.Values["user_id"]; !ok {
 			return c.Redirect(http.StatusFound, "/admin/login")
 		}
 
