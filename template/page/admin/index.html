@@ -1,5 +1,6 @@
 {{define "content"}}
     <a href="/admin/article/new">Create</a>
+    <a href="/admin/logout">Logout</a>
     {{range .articles}}
         <ul>
             <li><a href="/admin/article/edit/{{.ID}}">{{.Title}}</a></li>

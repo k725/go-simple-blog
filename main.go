@@ -121,7 +121,7 @@ func setupRoute(e *echo.Echo) {
 	// Login area
 	g := e.Group("/admin")
 	g.Use(ServerHeader)
-
+	g.GET("/logout", controller.GetAdminLogout)
 	g.GET("/article", controller.GetAdminArticles)
 	g.GET("/article/new", controller.GetAdminNewArticle)
 	g.POST("/article/new", controller.PostAdminNewArticle)

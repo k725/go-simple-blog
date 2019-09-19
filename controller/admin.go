@@ -46,6 +46,18 @@ func PostAdminLogin(c echo.Context) error {
 	return c.Redirect(http.StatusFound, "/admin/article")
 }
 
+func GetAdminLogout(c echo.Context) error {
+	s, err := sess.GetSession(c)
+	if err != nil {
+		return err
+	}
+	s.Options.MaxAge = -1
+	if err := s.Save(c.Request(), c.Response()); err != nil {
+		return err
+	}
+	return c.Redirect(http.StatusFound, "/admin/login")
+}
+
 func GetAdminArticles(c echo.Context) error {
 	// s, _ := sess.GetSession(c)
 
