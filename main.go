@@ -139,15 +139,12 @@ func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc {
 			// @todo
 			return err
 		}
-		c.Logger().Debug(fmt.Sprintf("%v", s.Values))
-		c.Logger().Debug("Before")
-
 		if _, ok := s.Values["user_id"]; !ok {
 			return c.Redirect(http.StatusFound, "/admin/login")
 		}
 
 		err = next(c)
-		c.Logger().Debug("After")
+		// After
 		return err
 	}
 }
