@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"errors"
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/labstack/echo/v4"
@@ -25,14 +26,17 @@ func GetAdminNewArticle(c echo.Context) error {
 }
 
 func PostAdminNewArticle(c echo.Context) error {
-	cat, err := strconv.Atoi(c.FormValue("category"))
+	ca, err := strconv.Atoi(c.FormValue("category"))
 	if err != nil {
 		return err
+	}
+	if !model.HasCategory(ca) {
+		return errors.New("invalid category")
 	}
 	err = model.InsertArticle(model.Article{
 		Title: c.FormValue("title"),
 		Body:  c.FormValue("body"),
-		Category: cat,
+		Category: ca,
 	})
 	if err != nil {
 		return nil
@@ -62,6 +66,9 @@ func PostAdminArticle(c echo.Context) error {
 	ca, err := strconv.Atoi(c.FormValue("category"))
 	if err != nil {
 		return err
+	}
+	if !model.HasCategory(ca) {
+		return errors.New("invalid category")
 	}
 	err = model.UpdateArticle(model.Article{
 		Model: gorm.Model{

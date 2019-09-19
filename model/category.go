@@ -12,3 +12,12 @@ func GetAllCategories() []Category {
 	GetConnection().Find(&c)
 	return c
 }
+
+func HasCategory(id int) bool {
+	var c = 0
+	GetConnection().
+		Model(&Category{}).
+		Where("id = ?", id).
+		Count(&c)
+	return c != 0
+}
