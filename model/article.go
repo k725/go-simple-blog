@@ -14,16 +14,27 @@ type ArticleFull struct {
 	Article
 	CategoryName string `gorm:"column:categoryName"`
 	CategoryID int `gorm:"column:categoryId"`
+	UserName string `gorm:"column:userName"`
+	UserID string `gorm:"column:userId"`
+}
+
+func fullArticleQueryBuilder() *gorm.DB {
+	sel := "`articles`.*,"
+	sel += "categories.name as categoryName, categories.id as categoryId,"
+	sel += "users.name as userName, users.id as userId"
+
+	return GetConnection().
+		Table("articles").
+		Select(sel).
+		Joins("LEFT JOIN categories ON articles.category = categories.id").
+		Joins("LEFT JOIN users ON articles.author = users.id").
+		Order("created_at desc")
 }
 
 // GetArticle ...
 func GetArticle(id int) ArticleFull {
 	var a ArticleFull
-	GetConnection().
-		Table("articles").
-		Select("`articles`.*, categories.name as categoryName, categories.id as categoryId").
-		Joins("LEFT JOIN categories ON articles.category = categories.id").
-		Order("created_at desc").
+	fullArticleQueryBuilder().
 		Where("articles.id = ?", id).
 		First(&a)
 	return a
@@ -33,11 +44,7 @@ func GetArticle(id int) ArticleFull {
 // @todo fix
 func GetAllArticles() []ArticleFull {
 	var a []ArticleFull
-	GetConnection().
-		Table("articles").
-		Select("`articles`.*, categories.name as categoryName").
-		Joins("LEFT JOIN categories ON articles.category = categories.id").
-		Order("created_at desc").
+	fullArticleQueryBuilder().
 		Scan(&a)
 	return a
 }
@@ -45,11 +52,7 @@ func GetAllArticles() []ArticleFull {
 // GetArticlesByCategory ...
 func GetArticlesByCategory(id int) []ArticleFull {
 	var a []ArticleFull
-	GetConnection().
-		Table("articles").
-		Select("`articles`.*, categories.name as categoryName").
-		Joins("LEFT JOIN categories ON articles.category = categories.id").
-		Order("created_at desc").
+	fullArticleQueryBuilder().
 		Where("category = ?", id).
 		Scan(&a)
 	return a

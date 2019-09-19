@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
+	"github.com/k725/go-simple-blog/service/sess"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"strconv"
@@ -33,10 +34,26 @@ func PostAdminNewArticle(c echo.Context) error {
 	if !model.HasCategory(ca) {
 		return errors.New("invalid category")
 	}
+
+	s, err := sess.GetSession(c)
+	if err != nil {
+		return err
+	}
+	ui, ok := s.Values["user_id"]
+	if !ok {
+		return errors.New("invalid user id")
+	}
+	uis, ok := ui.(string)
+	if !ok {
+		return errors.New("invalid type")
+	}
+	u := model.GetUserByUserId(uis)
+
 	err = model.InsertArticle(model.Article{
 		Title: c.FormValue("title"),
 		Body:  c.FormValue("body"),
 		Category: ca,
+		Author: int(u.ID),
 	})
 	if err != nil {
 		return nil
