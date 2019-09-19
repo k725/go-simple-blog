@@ -1,3 +1,15 @@
 {{define "content"}}
-    こんにちは
+    {{include "parts/header_navigation"}}
+
+    <div class="ui main text container">
+        <h1 class="ui header">Simple Blog</h1>
+        <p>Welcome my blog!</p>
+
+        <div class="ui divided items">
+            <h2>About</h2>
+            <p>This my simple blog!</p>
+        </div>
+    </div>
+
+    {{include "parts/footer_navigation"}}
 {{end}}
