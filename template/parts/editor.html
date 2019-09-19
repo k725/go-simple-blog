@@ -1,0 +1,27 @@
+<form method="post" class="ui form">
+    <div class="field">
+        <label>Post title</label>
+        <input type="text" name="title" placeholder="Title" value="{{.article.Title}}">
+    </div>
+    <div class="field">
+        <label>Post body</label>
+        <textarea id="editor" name="body" cols="30" rows="10" placeholder="Body">{{.article.Body}}</textarea>
+    </div>
+    <div class="field">
+        <label>Category</label>
+        <select name="category">
+            <option value="0">hoge</option>
+            <option value="1">fuga</option>
+        </select>
+    </div>
+    <div class="ui right floated buttons">
+        <button class="positive ui button" type="submit">
+            <i class="save icon"></i> Save
+        </button>
+        {{if .editable}}
+            <button class="negative ui button" type="submit" onclick="return confirm('Are you sure?')">
+                <i class="trash icon"></i> Delete
+            </button>
+        {{end}}
+    </div>
+</form>

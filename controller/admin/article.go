@@ -16,7 +16,9 @@ func GetAdminArticles(c echo.Context) error {
 }
 
 func GetAdminNewArticle(c echo.Context) error {
-	return c.Render(http.StatusOK, "page/admin/edit", map[string]interface{}{})
+	return c.Render(http.StatusOK, "page/admin/edit", map[string]interface{}{
+		"editable": false,
+	})
 }
 
 func PostAdminNewArticle(c echo.Context) error {
@@ -39,6 +41,7 @@ func GetAdminArticle(c echo.Context) error {
 	a := model.GetArticle(id)
 	return c.Render(http.StatusOK, "page/admin/article", map[string]interface{}{
 		"article": a,
+		"editable": true,
 	})
 }
 

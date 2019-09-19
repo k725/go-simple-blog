@@ -8,10 +8,12 @@
         {{include "parts/header_import"}}
         {{include "parts/header_style"}}
         {{include "parts/ga"}}
+        {{template "style" .}}
     </head>
     <body>
         {{template "content" .}}
         <p>© {{copy}} k725. All rights reserved.</p>
         {{include "parts/footer_import"}}
+        {{template "script" .}}
     </body>
 </html>
