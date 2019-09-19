@@ -50,6 +50,22 @@ func GetAllArticles() []ArticleFull {
 	return a
 }
 
+func GetArticles(offset, limit int) []ArticleFull {
+	var a []ArticleFull
+	fullArticleQueryBuilder().
+		Where("articles.deleted_at IS NULL").
+		Offset(offset).
+		Limit(limit).
+		Scan(&a)
+	return a
+}
+
+func GetArticlesCount() int {
+	var c int
+	fullArticleQueryBuilder().Model(Article{}).Count(&c)
+	return c
+}
+
 // GetArticlesByCategory ...
 func GetArticlesByCategory(id int) []ArticleFull {
 	var a []ArticleFull

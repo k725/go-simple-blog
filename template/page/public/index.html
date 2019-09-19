@@ -36,6 +36,30 @@
                 </div>
             {{end}}
         </div>
+
+        <div class="ui one column centered grid">
+            {{if eq .currentPage 1 }}
+                <a class="ui icon button disabled">
+                    <i class="left chevron icon"></i>
+                </a>
+            {{else}}
+                <a href="/?page={{sub .currentPage 1}}" class="ui icon button">
+                    <i class="left chevron icon"></i>
+                </a>
+            {{end}}
+
+            <span style="padding-top: 0.3rem;">{{ .currentPage }} / {{ .totalPage }}</span>
+
+            {{if and (eq .totalPage .currentPage) (ne .currentPage 1)}}
+                <a class="ui icon button disabled">
+                    <i class="right chevron icon"></i>
+                </a>
+            {{else}}
+                <a href="/?page={{add .currentPage 1}}" class="ui icon button">
+                    <i class="right chevron icon"></i>
+                </a>
+            {{end}}
+        </div>
     </div>
 
     {{include "parts/footer_navigation"}}

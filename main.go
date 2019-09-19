@@ -98,6 +98,12 @@ func setupRender(e *echo.Echo) {
 			"safeHTML": func(t string) template.HTML {
 				return template.HTML(t)
 			},
+			"add": func(v1, v2 int) int {
+				return v1 + v2
+			},
+			"sub": func(v1, v2 int) int {
+				return v1 - v2
+			},
 		},
 		DisableCache: true,
 	})
