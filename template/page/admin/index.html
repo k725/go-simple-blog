@@ -5,12 +5,43 @@
 {{end}}
 
 {{define "content"}}
-    <a href="/admin/article/new">Create</a>
-    <a href="/admin/logout">Logout</a>
-    {{range .articles}}
-        <ul>
-            <li><a href="/admin/article/edit/{{.ID}}">{{.Title}}</a></li>
-        </ul>
-    {{end}}
+    <div class="ui main text container">
+        <a href="/admin/article/new" class="ui primary button">Create</a>
+        <a href="/admin/logout" class="ui negative button">Logout</a>
+        {{range .articles}}
+            <ul>
+                <li>
+                    <div>
+                        <p><a href="/admin/article/edit/{{.ID}}">{{.Title}}</a></p>
+                        <p>{{ .CreatedAt|dateYYYYMMDDHHmm }} / {{ .UserName }} / {{ .CategoryName }}</p>
+                    </div>
+                </li>
+            </ul>
+        {{end}}
+
+        <div class="ui one column centered grid">
+            {{if eq .currentPage 1 }}
+                <a class="ui icon button disabled">
+                    <i class="left chevron icon"></i>
+                </a>
+            {{else}}
+                <a href="?page={{sub .currentPage 1}}" class="ui icon button">
+                    <i class="left chevron icon"></i>
+                </a>
+            {{end}}
+
+            <span style="padding-top: 0.3rem;">{{ .currentPage }} / {{ .totalPage }}</span>
+
+            {{if and (eq .totalPage .currentPage) (or (ne .currentPage 1) (eq .totalPage 1))}}
+                <a class="ui icon button disabled">
+                    <i class="right chevron icon"></i>
+                </a>
+            {{else}}
+                <a href="?page={{add .currentPage 1}}" class="ui icon button">
+                    <i class="right chevron icon"></i>
+                </a>
+            {{end}}
+        </div>
+    </div>
 {{end}}
 
