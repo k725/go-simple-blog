@@ -62,18 +62,31 @@ func GetArticles(offset, limit int) []ArticleFull {
 
 func GetArticlesCount() int {
 	var c int
-	fullArticleQueryBuilder().Model(Article{}).Count(&c)
+	fullArticleQueryBuilder().
+		Model(Article{}).
+		Count(&c)
 	return c
 }
 
 // GetArticlesByCategory ...
-func GetArticlesByCategory(id int) []ArticleFull {
+func GetArticlesByCategory(id, offset, limit int) []ArticleFull {
 	var a []ArticleFull
 	fullArticleQueryBuilder().
 		Where("category = ?", id).
 		Where("articles.deleted_at IS NULL").
+		Offset(offset).
+		Limit(limit).
 		Scan(&a)
 	return a
+}
+
+func GetArticlesByCategoryCount(id int) int {
+	var c int
+	fullArticleQueryBuilder().
+		Model(Article{}).
+		Where("category = ?", id).
+		Count(&c)
+	return c
 }
 
 func InsertArticle(a Article) error {
