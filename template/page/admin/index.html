@@ -6,14 +6,21 @@
 
 {{define "content"}}
     <div class="ui main text container">
-        <a href="/admin/article/new" class="ui primary button">Create</a>
-        <a href="/admin/logout" class="ui negative button">Logout</a>
+        <div>
+            <a href="/admin/article/new" class="ui primary button">Create</a>
+            <a href="/admin/category" class="ui button">Category</a>
+            <a href="/admin/logout" class="ui negative button">Logout</a>
+        </div>
         {{range .articles}}
             <ul>
                 <li>
                     <div>
                         <p><a href="/admin/article/edit/{{.ID}}">{{.Title}}</a></p>
-                        <p>{{ .CreatedAt|dateYYYYMMDDHHmm }} / {{ .UserName }} / {{ .CategoryName }}</p>
+                        <p>
+                            {{ .CreatedAt|dateYYYYMMDDHHmm }} /
+                            {{ .UserName }} /
+                            <a href="/admin/category/{{ .CategoryID }}">{{ .CategoryName }}</a>
+                        </p>
                     </div>
                 </li>
             </ul>

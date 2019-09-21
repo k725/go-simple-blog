@@ -1,0 +1,35 @@
+{{define "style"}}
+{{end}}
+
+{{define "script"}}
+{{end}}
+
+{{define "content"}}
+    <div class="ui main text container">
+        <form method="post" class="ui form">
+            <div class="inline fields">
+                <div class="field">
+                    <label>Category name</label>
+                    <input type="text" name="name" placeholder="Name" value="" required>
+                </div>
+                <button class="positive ui button" type="submit" name="mode" value="default">
+                    <i class="save icon"></i> Save
+                </button>
+            </div>
+        </form>
+
+        <form method="post">
+            <input type="hidden" name="mode" value="delete">
+            {{range .categories}}
+                <ul>
+                    <li>
+                        <button type="submit" class="negative ui button" name="id" value="{{ .ID }}" onclick="return confirm('Are you sure?')">削除</button>
+                        <a href="/admin/category/{{ .ID }}">{{ .Name }}</a>
+                    </li>
+                </ul>
+            {{end}}
+        </form>
+
+    </div>
+{{end}}
+

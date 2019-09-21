@@ -21,3 +21,14 @@ func HasCategory(id int) bool {
 		Count(&c)
 	return c != 0
 }
+
+func InsertCategory(a Category) error {
+	c := GetConnection()
+	c.NewRecord(a)
+	return c.Create(&a).Error
+}
+
+func DeleteCategory(id int) error {
+	c := GetConnection()
+	return c.Where("id = ?", id).Delete(&Category{}).Error
+}

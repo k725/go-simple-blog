@@ -133,6 +133,10 @@ func setupRoute(e *echo.Echo) {
 	g.GET("/article/new", admin.GetAdminNewArticle)
 	g.POST("/article/new", admin.PostAdminNewArticle)
 
+	g.GET("/category", admin.GetCategories)
+	g.POST("/category", admin.PostCategory)
+	g.GET("/category/:id", admin.GetCategory)
+
 	g.GET("/article/edit/:id", admin.GetAdminArticle)
 	g.POST("/article/edit/:id", admin.PostAdminArticle)
 	g.DELETE("/article/edit/:id", admin.DeleteAdminArticle)
