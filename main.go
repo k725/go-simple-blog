@@ -98,6 +98,12 @@ func setupRender(e *echo.Echo) {
 			"safeHTML": func(t string) template.HTML {
 				return template.HTML(t)
 			},
+			"add": func(v1, v2 int) int {
+				return v1 + v2
+			},
+			"sub": func(v1, v2 int) int {
+				return v1 - v2
+			},
 		},
 		DisableCache: true,
 	})
@@ -126,6 +132,10 @@ func setupRoute(e *echo.Echo) {
 	g.GET("/article", admin.GetAdminArticles)
 	g.GET("/article/new", admin.GetAdminNewArticle)
 	g.POST("/article/new", admin.PostAdminNewArticle)
+
+	g.GET("/category", admin.GetCategories)
+	g.POST("/category", admin.PostCategory)
+	g.GET("/category/:id", admin.GetCategory)
 
 	g.GET("/article/edit/:id", admin.GetAdminArticle)
 	g.POST("/article/edit/:id", admin.PostAdminArticle)

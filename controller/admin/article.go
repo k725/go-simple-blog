@@ -6,14 +6,29 @@ import (
 	"github.com/k725/go-simple-blog/model"
 	"github.com/k725/go-simple-blog/service/sess"
 	"github.com/labstack/echo/v4"
+	"math"
 	"net/http"
 	"strconv"
 )
 
+const (
+	pageLimit = 5
+)
+
 func GetAdminArticles(c echo.Context) error {
-	a := model.GetAllArticles()
+	p, err := strconv.Atoi(c.QueryParam("page"));
+	if err != nil || p == 0 {
+		p = 1
+	}
+
+	ac := model.GetArticlesCount()
+	tp := int(math.Ceil(float64(ac) / pageLimit))
+
+	a := model.GetArticles((p - 1) * pageLimit, pageLimit)
 	return c.Render(http.StatusOK, "page/admin/index", map[string]interface{}{
 		"articles": a,
+		"totalPage": tp,
+		"currentPage": p,
 	})
 }
 
