@@ -12,6 +12,7 @@ import (
 func GetCategories(c echo.Context) error {
 	ca := model.GetAllCategories()
 	return c.Render(http.StatusOK, "page/admin/category", map[string]interface{}{
+		"title": "Categories",
 		"categories": ca,
 	})
 }
@@ -65,6 +66,7 @@ func GetCategory(c echo.Context) error {
 
 	a := model.GetArticlesByCategory(id, (p - 1) * pageLimit, pageLimit)
 	return c.Render(http.StatusOK, "page/admin/index", map[string]interface{}{
+		"title": "Category",
 		"articles": a,
 		"totalPage": tp,
 		"currentPage": p,

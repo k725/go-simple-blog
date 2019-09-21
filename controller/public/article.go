@@ -19,6 +19,7 @@ func GetArticle(c echo.Context) error {
 
 	a.Body = markdown.Render(a.Body)
 	return c.Render(http.StatusOK, "page/public/article", map[string]interface{}{
+		"title": a.Title + " - SimpleBlog",
 		"article": a,
 		"categories": ca,
 	})

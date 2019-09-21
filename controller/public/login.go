@@ -17,7 +17,9 @@ func GetAdminLogin(c echo.Context) error {
 	if _, ok := s.Values["user_id"]; ok {
 		return c.Redirect(http.StatusFound, "/admin/article")
 	}
-	return c.Render(http.StatusOK, "page/public/login", map[string]interface{}{})
+	return c.Render(http.StatusOK, "page/public/login", map[string]interface{}{
+		"title": "Login",
+	})
 }
 
 func PostAdminLogin(c echo.Context) error {

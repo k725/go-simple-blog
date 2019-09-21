@@ -26,6 +26,7 @@ func GetAdminArticles(c echo.Context) error {
 
 	a := model.GetArticles((p - 1) * pageLimit, pageLimit)
 	return c.Render(http.StatusOK, "page/admin/index", map[string]interface{}{
+		"title": "Articles",
 		"articles": a,
 		"totalPage": tp,
 		"currentPage": p,
@@ -35,6 +36,7 @@ func GetAdminArticles(c echo.Context) error {
 func GetAdminNewArticle(c echo.Context) error {
 	ca := model.GetAllCategories()
 	return c.Render(http.StatusOK, "page/admin/edit", map[string]interface{}{
+		"title": "New article",
 		"editable":   false,
 		"categories": ca,
 		"article":    model.ArticleFull{},
@@ -84,6 +86,7 @@ func GetAdminArticle(c echo.Context) error {
 	ca := model.GetAllCategories()
 	a := model.GetArticle(id)
 	return c.Render(http.StatusOK, "page/admin/article", map[string]interface{}{
+		"title": a.Title + " - SimpleBlog",
 		"article":    a,
 		"editable":   true,
 		"categories": ca,

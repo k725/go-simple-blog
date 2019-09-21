@@ -24,6 +24,7 @@ func GetIndex(c echo.Context) error {
 	a := model.GetArticles((p - 1) * pageLimit, pageLimit)
 	ca := model.GetAllCategories()
 	return c.Render(http.StatusOK, "page/public/index", map[string]interface{}{
+		"title": "SimpleBlog",
 		"articles": a,
 		"categories": ca,
 		"totalPage": tp,

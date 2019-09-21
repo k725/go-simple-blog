@@ -28,6 +28,7 @@ func GetCategory(c echo.Context) error {
 
 	// @todo temp template
 	return c.Render(http.StatusOK, "page/public/index", map[string]interface{}{
+		"title": "SimpleBlog",
 		"articles": a,
 		"categories": ca,
 		"totalPage": tp,
