@@ -20,7 +20,7 @@
                     <div class="content">
                         <p class="header">{{.Title}}</p>
                         <div class="meta">
-                            <span>Created: {{.CreatedAt|dateYYYYMMDD}}</span>
+                            <span>Created: {{.CreatedAt|dateToLocal|dateYYYYMMDD}}</span>
                         </div>
                         <div class="description">
                             <p>{{trimChars .Body 64}}</p>

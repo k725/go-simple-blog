@@ -17,7 +17,7 @@
                     <div>
                         <p><a href="/admin/article/edit/{{.ID}}">{{.Title}}</a></p>
                         <p>
-                            {{ .CreatedAt|dateYYYYMMDDHHmm }} /
+                            {{ .CreatedAt|dateToLocal|dateYYYYMMDDHHmm }} /
                             {{ .UserName }} /
                             <a href="/admin/category/{{ .CategoryID }}">{{ .CategoryName }}</a>
                         </p>

@@ -80,6 +80,10 @@ func setupRender(e *echo.Echo) {
 			"copy": func() string {
 				return time.Now().Format("2006")
 			},
+			"dateToLocal": func(t time.Time) time.Time {
+				l, _ := time.LoadLocation("Local")
+				return t.In(l)
+			},
 			"dateYYYYMMDD": func(t time.Time) string {
 				return t.Format("2006/01/02")
 			},

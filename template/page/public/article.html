@@ -25,9 +25,9 @@
 
             <div class="column">
                 <div class="ui">
-                    Created: {{.article.CreatedAt|dateYYYYMMDDHHmm}}
+                    Created: {{.article.CreatedAt|dateToLocal|dateYYYYMMDDHHmm}}
                     {{if not (eqTime .article.CreatedAt .article.UpdatedAt)}}
-                        <br>Updated: {{.article.UpdatedAt|dateYYYYMMDDHHmm}}
+                        <br>Updated: {{.article.UpdatedAt|dateToLocal|dateYYYYMMDDHHmm}}
                     {{end}}
                 </div>
             </div>
