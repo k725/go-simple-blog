@@ -1,0 +1,28 @@
+body {
+    background-color: #ffffff;
+    min-height: 100vh;
+}
+.ui.menu .item img.logo {
+    margin-right: 1.5em;
+}
+.main.container {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+}
+
+.article-body {
+    margin-top: 2rem;
+}
+.article-body img {
+    max-width: 100%;
+}
+
+.main {
+    min-height: 100%;
+    box-sizing: border-box;
+}
+.ui.footer.form-page {
+    position: absolute;
+    margin-top: -47px;
+    width: 100%;
+}

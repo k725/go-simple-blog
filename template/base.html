@@ -6,13 +6,11 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>{{.title}}</title>
         {{include "parts/header_import"}}
-        {{include "parts/header_style"}}
-        {{include "parts/ga"}}
         {{template "style" .}}
     </head>
     <body>
         {{template "content" .}}
-        <p>© {{copy}} k725. All rights reserved.</p>
+        {{include "parts/navigation/footer_navigation"}}
         {{include "parts/footer_import"}}
         {{template "script" .}}
     </body>

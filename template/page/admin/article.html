@@ -1,15 +1,15 @@
 {{define "style"}}
-    {{ include "parts/editor_style" }}
+    {{ include "parts/editor/editor_style" }}
 {{end}}
 
 {{define "script"}}
-    {{ include "parts/editor_script" }}
+    {{ include "parts/editor/editor_script" }}
 {{end}}
 
 {{define "content"}}
     <div class="ui main text container">
         <h1>Edit</h1>
 
-        {{ include "parts/editor" }}
+        {{ include "parts/editor/editor" }}
     </div>
 {{end}}
