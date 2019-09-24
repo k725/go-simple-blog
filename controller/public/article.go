@@ -14,9 +14,12 @@ func GetArticle(c echo.Context) error {
 		return err
 	}
 
-	a := model.GetArticle(id)
-	ca := model.GetAllCategories()
+	a, ok := model.GetArticle(id)
+	if !ok {
+		return echo.NewHTTPError(http.StatusNotFound, "Article not found")
+	}
 
+	ca := model.GetAllCategories()
 	a.Body = markdown.Render(a.Body)
 	return c.Render(http.StatusOK, "page/public/article", map[string]interface{}{
 		"title": a.Title + " - SimpleBlog",

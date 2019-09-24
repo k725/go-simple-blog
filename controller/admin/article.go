@@ -84,7 +84,11 @@ func GetAdminArticle(c echo.Context) error {
 		return err
 	}
 	ca := model.GetAllCategories()
-	a := model.GetArticle(id)
+	
+	a, ok := model.GetArticle(id)
+	if !ok {
+		return echo.NewHTTPError(http.StatusNotFound, "Article not found")
+	}
 	return c.Render(http.StatusOK, "page/admin/article", map[string]interface{}{
 		"title": a.Title + " - SimpleBlog",
 		"article":    a,

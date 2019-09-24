@@ -32,12 +32,13 @@ func fullArticleQueryBuilder() *gorm.DB {
 }
 
 // GetArticle ...
-func GetArticle(id int) ArticleFull {
+func GetArticle(id int) (ArticleFull, bool) {
 	var a ArticleFull
-	fullArticleQueryBuilder().
+	r := fullArticleQueryBuilder().
 		Where("articles.id = ?", id).
 		First(&a)
-	return a
+
+	return a, !r.RecordNotFound()
 }
 
 // GetAllArticles ...
