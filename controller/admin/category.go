@@ -60,6 +60,9 @@ func GetCategory(c echo.Context) error {
 	if err != nil {
 		return err
 	}
+	if !model.HasCategory(id) {
+		return echo.NewHTTPError(http.StatusNotFound, "Category not found")
+	}
 
 	ac := model.GetArticlesByCategoryCount(id)
 	tp := int(math.Ceil(float64(ac) / pageLimit))

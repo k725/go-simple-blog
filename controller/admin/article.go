@@ -84,7 +84,7 @@ func GetAdminArticle(c echo.Context) error {
 		return err
 	}
 	ca := model.GetAllCategories()
-	
+
 	a, ok := model.GetArticle(id)
 	if !ok {
 		return echo.NewHTTPError(http.StatusNotFound, "Article not found")
