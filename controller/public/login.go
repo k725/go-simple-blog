@@ -31,7 +31,7 @@ func PostAdminLogin(c echo.Context) error {
 
 	user := model.GetUserByUserId(id)
 	if err := util.PasswordVerify(user.Password, pw); err != nil {
-		c.Logger().Error(err)
+		c.Logger().Warn(err)
 		return c.Redirect(http.StatusFound, "/admin/login")
 	}
 
