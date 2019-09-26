@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/foolin/goview"
 	"github.com/foolin/goview/supports/echoview-v4"
+	"github.com/gorilla/securecookie"
 	"github.com/k725/go-simple-blog/config"
 	"github.com/k725/go-simple-blog/controller/admin"
 	"github.com/k725/go-simple-blog/controller/public"
@@ -14,29 +15,35 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/srinathgs/mysqlstore"
 	"html/template"
+	"log"
 	"net/http"
 	"time"
 	"unicode/utf8"
 )
 
-func main() {
+var dt = model.DbTarget{
+	Address:  config.EnvDBAddress,
+	User:     config.EnvDBUserName,
+	Password: config.EnvDBPassword,
+	Database: config.EnvDBName,
+}
 
-	t := model.DbTarget{
-		Address:  config.EnvDBAddress,
-		User:     config.EnvDBUserName,
-		Password: config.EnvDBPassword,
-		Database: config.EnvDBName,
+func main() {
+	isDevelop := config.IsDevelopMode()
+	if isDevelop {
+		log.Println("Now development mode")
 	}
-	db, err := model.SetupConnection(t)
+
+	db, err := model.SetupConnection(dt)
 	if err != nil {
 		panic(err)
 	}
 	defer func() {
 		if err := model.CloseConnection(); err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	}()
-	db.LogMode(true)
+	db.LogMode(isDevelop)
 	db.AutoMigrate(
 		&model.Article{},
 		&model.User{},
@@ -47,17 +54,15 @@ func main() {
 
 	e := echo.New()
 
-	con := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True", t.User, t.Password, t.Address, t.Database)
-	store, err := mysqlstore.NewMySQLStore(con, "session", "/", 3600, []byte("secret"))
+	store, err := mysqlstore.NewMySQLStoreFromConnection(db.DB(), "session", "/", 3600, []byte(config.EnvSecret))
 	if err != nil {
 		panic(err)
 	}
-
 	defer store.Close()
 
 	e.Use(session.Middleware(store))
 
-	e.Debug = true
+	e.Debug = isDevelop
 	e.Static("/", "public")
 
 	e.HTTPErrorHandler = customHTTPErrorHandler
@@ -67,7 +72,11 @@ func main() {
 	setupRoute(e)
 
 	e.Logger.Fatal(e.Start(":8888"))
-	// defer e.Close()
+	defer func () {
+		if err := e.Close(); err != nil {
+			log.Fatal(err)
+		}
+	}()
 }
 
 func setupRender(e *echo.Echo) {
@@ -132,8 +141,8 @@ func setupRoute(e *echo.Echo) {
 	e.POST("/admin/login", public.PostAdminLogin)
 
 	// Login area
-	g := e.Group("/admin")
-	g.Use(ServerHeader)
+	g := e.Group("/admin", loginCheckMiddleware)
+
 	g.GET("/logout", admin.GetAdminLogout)
 	g.GET("/article", admin.GetAdminArticles)
 	g.GET("/article/new", admin.GetAdminNewArticle)
@@ -148,11 +157,15 @@ func setupRoute(e *echo.Echo) {
 	g.DELETE("/article/edit/:id", admin.DeleteAdminArticle)
 }
 
-func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc {
+func loginCheckMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		s, err := sess.GetSession(c)
-		if err != nil {
-			// @todo
+		if err != nil && err.Error() == securecookie.ErrMacInvalid.Error() {
+			if err := sess.ForceLogoutSession(c); err != nil {
+				return err
+			}
+			return c.Redirect(http.StatusFound, "/admin/login")
+		} else if err != nil {
 			return err
 		}
 		if _, ok := s.Values["user_id"]; !ok {
@@ -179,6 +192,8 @@ func customHTTPErrorHandler(err error, c echo.Context) {
 	}
 	if err := c.Render(code, errorPage, errorParam); err != nil {
 		c.Logger().Error(err)
+	} else {
+		return
 	}
 
 	// エラーページのテンプレートレンダリングで失敗したときの保険

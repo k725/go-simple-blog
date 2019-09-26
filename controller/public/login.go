@@ -2,6 +2,7 @@ package public
 
 import (
 	"errors"
+	"github.com/gorilla/securecookie"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/k725/go-simple-blog/service/sess"
 	"github.com/k725/go-simple-blog/util"
@@ -10,16 +11,26 @@ import (
 )
 
 func GetAdminLogin(c echo.Context) error {
-	s, err := sess.GetSession(c)
-	if err != nil {
-		return err
-	}
-	if _, ok := s.Values["user_id"]; ok {
-		return c.Redirect(http.StatusFound, "/admin/article")
-	}
-	return c.Render(http.StatusOK, "page/public/login", map[string]interface{}{
+	p := map[string]interface{}{
 		"title": "Login",
-	})
+	}
+
+	s, err := sess.GetSession(c)
+	if err == nil {
+		if _, ok := s.Values["user_id"]; ok {
+			return c.Redirect(http.StatusFound, "/admin/article")
+		}
+		return c.Render(http.StatusOK, "page/public/login", p)
+	}
+
+	if err.Error() == securecookie.ErrMacInvalid.Error() {
+		if err := sess.ForceLogoutSession(c); err != nil {
+			return err
+		}
+		// NOTE: c.Render を最後に呼び出さないとCookieが書き換わらないので😭
+		return c.Render(http.StatusOK, "page/public/login", p)
+	}
+	return err
 }
 
 func PostAdminLogin(c echo.Context) error {
