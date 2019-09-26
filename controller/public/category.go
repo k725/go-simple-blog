@@ -19,6 +19,10 @@ func GetCategory(c echo.Context) error {
 		return err
 	}
 
+	if !model.HasCategory(id) {
+		return echo.NewHTTPError(http.StatusNotFound, "Category not found")
+	}
+
 	ca := model.GetAllCategories()
 
 	ac := model.GetArticlesByCategoryCount(id)
