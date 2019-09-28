@@ -13,23 +13,31 @@ func SetupDB() {
 }
 
 func setupCategory(con *gorm.DB) {
-	a := Category{
-		Name: "未設定",
+	var count int
+	con.Model(Category{}).Count(&count)
+	if count == 0 {
+		a := Category{
+			Name: "未設定",
+		}
+		con.NewRecord(a)
+		con.Create(&a)
 	}
-	con.NewRecord(a)
-	con.Create(&a)
 }
 
 func setupInitialUser(con *gorm.DB) {
-	p, err := util.PasswordHash("passw0rd")
-	if err != nil {
-		panic(err)
+	var count int
+	con.Model(User{}).Count(&count)
+	if count == 0 {
+		p, err := util.PasswordHash("passw0rd")
+		if err != nil {
+			panic(err)
+		}
+		a := User{
+			UserID:   "admin",
+			Password: p,
+			Name:     "あどみん",
+		}
+		con.NewRecord(a)
+		con.Create(&a)
 	}
-	a := User{
-		UserID:   "admin",
-		Password: p,
-		Name:     "あどみん",
-	}
-	con.NewRecord(a)
-	con.Create(&a)
 }

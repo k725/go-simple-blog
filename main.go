@@ -50,7 +50,7 @@ func main() {
 		&model.Category{},
 	)
 
-	// model.SetupDB()
+	model.SetupDB()
 
 	e := echo.New()
 
