@@ -26,7 +26,7 @@ func GetConnection() *gorm.DB {
 // SetupConnection ...
 // NOTE: https://github.com/go-sql-driver/mysql
 func SetupConnection(c DbTarget) (*gorm.DB, error) {
-	con := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8&parseTime=True&loc=UTC",
+	con := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=UTC",
 		c.User, c.Password, c.Address, c.Database)
 	d, err := gorm.Open("mysql", con)
 	if err != nil {
