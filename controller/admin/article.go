@@ -69,8 +69,8 @@ func PostAdminNewArticle(c echo.Context) error {
 	err = model.InsertArticle(model.Article{
 		Title:    c.FormValue("title"),
 		Body:     c.FormValue("body"),
-		Category: ca,
-		Author:   int(u.ID),
+		CategoryID: uint(ca),
+		UserID:   u.ID,
 	})
 	if err != nil {
 		return nil
@@ -124,7 +124,7 @@ func PostAdminArticle(c echo.Context) error {
 		},
 		Title:    c.FormValue("title"),
 		Body:     c.FormValue("body"),
-		Category: ca,
+		CategoryID: uint(ca),
 	})
 	if err != nil {
 		return nil

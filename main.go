@@ -46,6 +46,8 @@ func main() {
 		&model.User{},
 		&model.Category{},
 	)
+	db.Model(&model.Article{}).AddForeignKey("category_id", "categories(id)", "RESTRICT", "RESTRICT")
+	db.Model(&model.Article{}).AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
 
 	go model.SetupDB()
 
