@@ -2,6 +2,7 @@ package admin
 
 import (
 	"errors"
+	"fmt"
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/k725/go-simple-blog/service/sess"
@@ -24,6 +25,9 @@ func GetAdminArticles(c echo.Context) error {
 	ac := model.GetArticlesCount()
 	tp := int(math.Ceil(float64(ac) / pageLimit))
 
+	s, err := sess.GetSession(c)
+	fmt.Println(s.Flashes())
+	_ = s.Save(c.Request(), c.Response().Writer)
 	a := model.GetArticles((p - 1) * pageLimit, pageLimit)
 	return c.Render(http.StatusOK, "page/admin/index", map[string]interface{}{
 		"title": "Articles",
@@ -65,6 +69,9 @@ func PostAdminNewArticle(c echo.Context) error {
 		return errors.New("invalid type")
 	}
 	u := model.GetUserByUserId(uis)
+
+	s.AddFlash("hogehoge")
+	_ = s.Save(c.Request(), c.Response().Writer)
 
 	err = model.InsertArticle(model.Article{
 		Title:    c.FormValue("title"),
