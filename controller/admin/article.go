@@ -9,6 +9,7 @@ import (
 	"math"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -48,9 +49,6 @@ func PostAdminNewArticle(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	if !model.HasCategory(ca) {
-		return errors.New("invalid category")
-	}
 
 	s, err := sess.GetSession(c)
 	if err != nil {
@@ -69,11 +67,15 @@ func PostAdminNewArticle(c echo.Context) error {
 	err = model.InsertArticle(model.Article{
 		Title:    c.FormValue("title"),
 		Body:     c.FormValue("body"),
-		Category: ca,
-		Author:   int(u.ID),
+		CategoryID: uint(ca),
+		UserID:   u.ID,
 	})
 	if err != nil {
-		return nil
+		if strings.HasPrefix(err.Error(), "Error 1452:") {
+			c.Logger().Info("Invalid category id")
+			return c.Redirect(http.StatusFound, "/admin/article")
+		}
+		return err
 	}
 	return c.Redirect(http.StatusFound, "/admin/article")
 }
@@ -115,19 +117,20 @@ func PostAdminArticle(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	if !model.HasCategory(ca) {
-		return errors.New("invalid category")
-	}
 	err = model.UpdateArticle(model.Article{
 		Model: gorm.Model{
 			ID: uint(id),
 		},
 		Title:    c.FormValue("title"),
 		Body:     c.FormValue("body"),
-		Category: ca,
+		CategoryID: uint(ca),
 	})
 	if err != nil {
-		return nil
+		if strings.HasPrefix(err.Error(), "Error 1452:") {
+			c.Logger().Info("Invalid category id")
+			return c.Redirect(http.StatusFound, "/admin/article")
+		}
+		return err
 	}
 	return c.Redirect(http.StatusFound, "/admin/article")
 }
