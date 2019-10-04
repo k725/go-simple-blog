@@ -7,6 +7,7 @@ import (
 	"math"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 func GetCategories(c echo.Context) error {
@@ -25,11 +26,11 @@ func PostCategory(c echo.Context) error {
 		if err != nil {
 			return err
 		}
-
-		if !model.HasCategory(idi) {
-
-		}
 		if err := model.DeleteCategory(idi); err != nil {
+			if strings.HasPrefix(err.Error(), "Error 1451:") {
+				c.Logger().Info("Category has articles.")
+				return c.Redirect(http.StatusFound, "/admin/category")
+			}
 			return err
 		}
 		return c.Redirect(http.StatusFound, "/admin/category")
