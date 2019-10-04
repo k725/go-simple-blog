@@ -9,6 +9,7 @@ import (
 	"math"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -48,9 +49,6 @@ func PostAdminNewArticle(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	if !model.HasCategory(ca) {
-		return errors.New("invalid category")
-	}
 
 	s, err := sess.GetSession(c)
 	if err != nil {
@@ -73,7 +71,11 @@ func PostAdminNewArticle(c echo.Context) error {
 		UserID:   u.ID,
 	})
 	if err != nil {
-		return nil
+		if strings.HasPrefix(err.Error(), "Error 1452:") {
+			c.Logger().Info("Invalid category id")
+			return c.Redirect(http.StatusFound, "/admin/article")
+		}
+		return err
 	}
 	return c.Redirect(http.StatusFound, "/admin/article")
 }
@@ -115,9 +117,6 @@ func PostAdminArticle(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	if !model.HasCategory(ca) {
-		return errors.New("invalid category")
-	}
 	err = model.UpdateArticle(model.Article{
 		Model: gorm.Model{
 			ID: uint(id),
@@ -127,7 +126,11 @@ func PostAdminArticle(c echo.Context) error {
 		CategoryID: uint(ca),
 	})
 	if err != nil {
-		return nil
+		if strings.HasPrefix(err.Error(), "Error 1452:") {
+			c.Logger().Info("Invalid category id")
+			return c.Redirect(http.StatusFound, "/admin/article")
+		}
+		return err
 	}
 	return c.Redirect(http.StatusFound, "/admin/article")
 }
