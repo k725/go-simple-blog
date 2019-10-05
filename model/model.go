@@ -8,8 +8,20 @@ import (
 func SetupDB() {
 	c := GetConnection()
 
+	setupTables(c)
 	setupInitialUser(c)
 	setupCategory(c)
+}
+
+func setupTables(con *gorm.DB) {
+	con.AutoMigrate(
+		&Article{},
+		&User{},
+		&Category{},
+	)
+	con.Model(&Article{}).
+		AddForeignKey("category_id", "categories(id)", "RESTRICT", "RESTRICT").
+		AddForeignKey("user_id", "users(id)", "RESTRICT", "RESTRICT")
 }
 
 func setupCategory(con *gorm.DB) {

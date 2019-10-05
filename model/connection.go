@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/k725/go-simple-blog/config"
 )
 
 type DbTarget struct {
@@ -32,6 +33,7 @@ func SetupConnection(c DbTarget) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+	d.LogMode(config.IsDevelopMode())
 	dbConn = d
 	return d, nil
 }

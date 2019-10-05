@@ -9,7 +9,7 @@ import (
 )
 
 func GetCategory(c echo.Context) error {
-	p, err := strconv.Atoi(c.QueryParam("page"));
+	p, err := strconv.Atoi(c.QueryParam("page"))
 	if err != nil || p == 0 {
 		p = 1
 	}
@@ -28,14 +28,14 @@ func GetCategory(c echo.Context) error {
 	ac := model.GetArticlesByCategoryCount(id)
 	tp := int(math.Ceil(float64(ac) / pageLimit))
 
-	a := model.GetArticlesByCategory(id, (p - 1) * pageLimit, pageLimit)
+	a := model.GetArticlesByCategory(id, (p-1)*pageLimit, pageLimit)
 
 	// @todo temp template
 	return c.Render(http.StatusOK, "page/public/index", map[string]interface{}{
-		"title": "SimpleBlog",
-		"articles": a,
-		"categories": ca,
-		"totalPage": tp,
+		"title":       "SimpleBlog",
+		"articles":    a,
+		"categories":  ca,
+		"totalPage":   tp,
 		"currentPage": p,
 	})
 }

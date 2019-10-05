@@ -17,7 +17,7 @@ const (
 )
 
 func GetAdminArticles(c echo.Context) error {
-	p, err := strconv.Atoi(c.QueryParam("page"));
+	p, err := strconv.Atoi(c.QueryParam("page"))
 	if err != nil || p == 0 {
 		p = 1
 	}
@@ -25,11 +25,11 @@ func GetAdminArticles(c echo.Context) error {
 	ac := model.GetArticlesCount()
 	tp := int(math.Ceil(float64(ac) / pageLimit))
 
-	a := model.GetArticles((p - 1) * pageLimit, pageLimit)
+	a := model.GetArticles((p-1)*pageLimit, pageLimit)
 	return c.Render(http.StatusOK, "page/admin/index", map[string]interface{}{
-		"title": "Articles",
-		"articles": a,
-		"totalPage": tp,
+		"title":       "Articles",
+		"articles":    a,
+		"totalPage":   tp,
 		"currentPage": p,
 	})
 }
@@ -37,7 +37,7 @@ func GetAdminArticles(c echo.Context) error {
 func GetAdminNewArticle(c echo.Context) error {
 	ca := model.GetAllCategories()
 	return c.Render(http.StatusOK, "page/admin/edit", map[string]interface{}{
-		"title": "New article",
+		"title":      "New article",
 		"editable":   false,
 		"categories": ca,
 		"article":    model.ArticleFull{},
@@ -65,10 +65,10 @@ func PostAdminNewArticle(c echo.Context) error {
 	u := model.GetUserByUserId(uis)
 
 	err = model.InsertArticle(model.Article{
-		Title:    c.FormValue("title"),
-		Body:     c.FormValue("body"),
+		Title:      c.FormValue("title"),
+		Body:       c.FormValue("body"),
 		CategoryID: uint(ca),
-		UserID:   u.ID,
+		UserID:     u.ID,
 	})
 	if err != nil {
 		if strings.HasPrefix(err.Error(), "Error 1452:") {
@@ -92,7 +92,7 @@ func GetAdminArticle(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusNotFound, "Article not found")
 	}
 	return c.Render(http.StatusOK, "page/admin/article", map[string]interface{}{
-		"title": a.Title + " - SimpleBlog",
+		"title":      a.Title + " - SimpleBlog",
 		"article":    a,
 		"editable":   true,
 		"categories": ca,
@@ -121,8 +121,8 @@ func PostAdminArticle(c echo.Context) error {
 		Model: gorm.Model{
 			ID: uint(id),
 		},
-		Title:    c.FormValue("title"),
-		Body:     c.FormValue("body"),
+		Title:      c.FormValue("title"),
+		Body:       c.FormValue("body"),
 		CategoryID: uint(ca),
 	})
 	if err != nil {

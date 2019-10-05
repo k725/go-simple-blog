@@ -13,7 +13,7 @@ import (
 func GetCategories(c echo.Context) error {
 	ca := model.GetAllCategories()
 	return c.Render(http.StatusOK, "page/admin/category", map[string]interface{}{
-		"title": "Categories",
+		"title":      "Categories",
 		"categories": ca,
 	})
 }
@@ -42,7 +42,7 @@ func PostCategory(c echo.Context) error {
 	}
 
 	ca := model.Category{
-		Name:  cn,
+		Name: cn,
 	}
 	if err := model.InsertCategory(ca); err != nil {
 		return err
@@ -52,7 +52,7 @@ func PostCategory(c echo.Context) error {
 }
 
 func GetCategory(c echo.Context) error {
-	p, err := strconv.Atoi(c.QueryParam("page"));
+	p, err := strconv.Atoi(c.QueryParam("page"))
 	if err != nil || p == 0 {
 		p = 1
 	}
@@ -68,11 +68,11 @@ func GetCategory(c echo.Context) error {
 	ac := model.GetArticlesByCategoryCount(id)
 	tp := int(math.Ceil(float64(ac) / pageLimit))
 
-	a := model.GetArticlesByCategory(id, (p - 1) * pageLimit, pageLimit)
+	a := model.GetArticlesByCategory(id, (p-1)*pageLimit, pageLimit)
 	return c.Render(http.StatusOK, "page/admin/index", map[string]interface{}{
-		"title": "Category",
-		"articles": a,
-		"totalPage": tp,
+		"title":       "Category",
+		"articles":    a,
+		"totalPage":   tp,
 		"currentPage": p,
 	})
 }

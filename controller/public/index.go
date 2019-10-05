@@ -13,7 +13,7 @@ const (
 )
 
 func GetIndex(c echo.Context) error {
-	p, err := strconv.Atoi(c.QueryParam("page"));
+	p, err := strconv.Atoi(c.QueryParam("page"))
 	if err != nil || p == 0 {
 		p = 1
 	}
@@ -21,13 +21,13 @@ func GetIndex(c echo.Context) error {
 	ac := model.GetArticlesCount()
 	tp := int(math.Ceil(float64(ac) / pageLimit))
 
-	a := model.GetArticles((p - 1) * pageLimit, pageLimit)
+	a := model.GetArticles((p-1)*pageLimit, pageLimit)
 	ca := model.GetAllCategories()
 	return c.Render(http.StatusOK, "page/public/index", map[string]interface{}{
-		"title": "SimpleBlog",
-		"articles": a,
-		"categories": ca,
-		"totalPage": tp,
+		"title":       "SimpleBlog",
+		"articles":    a,
+		"categories":  ca,
+		"totalPage":   tp,
 		"currentPage": p,
 	})
 }
@@ -35,7 +35,7 @@ func GetIndex(c echo.Context) error {
 func GetAbout(c echo.Context) error {
 	ca := model.GetAllCategories()
 	return c.Render(http.StatusOK, "page/public/about", map[string]interface{}{
-		"title": "This About title",
+		"title":      "This About title",
 		"categories": ca,
 	})
 }
