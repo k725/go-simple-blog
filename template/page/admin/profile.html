@@ -1,0 +1,22 @@
+{{define "style"}}
+{{end}}
+
+{{define "script"}}
+{{end}}
+
+{{define "content"}}
+    <div class="ui main text container">
+        <form method="post" class="ui form">
+            <div class="field">
+                <label>User ID</label>
+                <input type="text" name="user-id" placeholder="User ID" value="{{ .user.UserID }}">
+            </div>
+            <div class="field">
+                <label>Display Name</label>
+                <input type="text" name="display-name" placeholder="Display Name" value="{{ .user.Name }}">
+            </div>
+            <button class="ui positive button" type="submit">Save</button>
+        </form>
+    </div>
+{{end}}
+
