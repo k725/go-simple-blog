@@ -15,7 +15,11 @@
             {{range .articles}}
                 <div class="item">
                     <div class="image">
-                        <img src="/image/article.png">
+                        {{if ne .TopImage ""}}
+                            <img src="{{.TopImage}}">
+                        {{else}}
+                            <img src="/image/article.png">
+                        {{end}}
                     </div>
                     <div class="content">
                         <p class="header">{{.Title}}</p>

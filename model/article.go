@@ -6,6 +6,7 @@ type Article struct {
 	gorm.Model
 	Title      string `gorm:"not null" sql:"type:text;"`
 	Body       string `gorm:"not null" sql:"type:text;"`
+	TopImage   string `sql:"type:text;"`
 	CategoryID uint   `gorm:"not null"`
 	UserID     uint   `gorm:"not null"`
 }
