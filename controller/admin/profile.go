@@ -5,6 +5,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/k725/go-simple-blog/service/sess"
+	"github.com/k725/go-simple-blog/util"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
@@ -53,6 +54,20 @@ func PostAdminProfile(c echo.Context) error {
 		UserID:   c.FormValue("user-id"),
 		Name:     c.FormValue("display-name"),
 	}
+
+	if c.FormValue("old-password") != "" && c.FormValue("new-password") != "" {
+		if err := util.PasswordVerify(uinf.Password, c.FormValue("old-password")); err != nil {
+			return err
+		}
+
+		pw, err := util.PasswordHash(c.FormValue("new-password"))
+		if err != nil {
+			return err
+		}
+		u.Password = pw
+	}
+
+
 	if err := model.UpdateUser(u); err != nil {
 		return err;
 	}
