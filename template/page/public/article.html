@@ -16,19 +16,25 @@
         <div class="ui equal width grid">
             <div class="column">
                 <div class="ui">
+                    <i class="user icon"></i> {{.article.UserName}}
                     <p>
-                        <a href="/category/{{.article.CategoryID}}" class="ui tag label">{{.article.CategoryName}}</a><br>
-                        Author: {{.article.UserName}}
+                        <a href="/category/{{.article.CategoryID}}" class="ui tag label">{{.article.CategoryName}}</a>
                     </p>
                 </div>
             </div>
 
             <div class="column">
                 <div class="ui">
-                    Created: {{.article.CreatedAt|dateToLocal|dateYYYYMMDDHHmm}}
-                    {{if not (eqTime .article.CreatedAt .article.UpdatedAt)}}
-                        <br>Updated: {{.article.UpdatedAt|dateToLocal|dateYYYYMMDDHHmm}}
-                    {{end}}
+
+
+                    <div
+                            {{if not (eqTime .article.CreatedAt .article.UpdatedAt)}}
+                                data-tooltip="{{.article.UpdatedAt|dateToLocal|dateYYYYMMDDHHmm}}"
+                            {{end}}
+                    >
+                        <i class="clock icon"></i> {{.article.CreatedAt|dateToLocal|dateYYYYMMDDHHmm}}
+                    </div>
+
                 </div>
             </div>
         </div>
