@@ -11,33 +11,43 @@
         <h1 class="ui header">Simple Blog</h1>
         <p>Welcome my blog!</p>
 
-        <h1 class="ui dividing header">{{.article.Title}}</h1>
+
 
         <div class="ui equal width grid">
-            <div class="column">
-                <div class="ui">
-                    <i class="user icon"></i> {{.article.UserName}}
-                    <p>
-                        <a href="/category/{{.article.CategoryID}}" class="ui tag label">{{.article.CategoryName}}</a>
-                    </p>
-                </div>
+            <div class="ten wide column">
+                <h1 class="ui header">{{.article.Title}}</h1>
             </div>
 
             <div class="column">
-                <div class="ui">
-
-
-                    <div
-                            {{if not (eqTime .article.CreatedAt .article.UpdatedAt)}}
-                                data-tooltip="{{.article.UpdatedAt|dateToLocal|dateYYYYMMDDHHmm}}"
-                            {{end}}
-                    >
-                        <i class="clock icon"></i> {{.article.CreatedAt|dateToLocal|dateYYYYMMDDHHmm}}
+                <div class="ui list">
+                    <div class="item">
+                        <i class="user icon"></i>
+                        <div class="content">
+                            {{.article.UserName}}
+                        </div>
                     </div>
-
+                    <div class="item">
+                        <i class="clock icon"></i>
+                        <div class="content">
+                            <span
+                                {{if not (eqTime .article.CreatedAt .article.UpdatedAt)}}
+                                    data-tooltip="Updated with {{.article.UpdatedAt|dateToLocal|dateYYYYMMDDHHmm}}"
+                                {{end}}
+                            >
+                                {{.article.CreatedAt|dateToLocal|dateYYYYMMDDHHmm}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <i class="tag icon"></i>
+                        <div class="content">
+                            <a href="/category/{{.article.CategoryID}}" class="ui tag label">{{.article.CategoryName}}</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="ui divider"></div>
         <div class="article-body">
             {{.article.Body|safeHTML}}
         </div>
