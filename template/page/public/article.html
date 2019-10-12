@@ -11,8 +11,6 @@
         <h1 class="ui header">Simple Blog</h1>
         <p>Welcome my blog!</p>
 
-
-
         <div class="ui equal width grid">
             <div class="ten wide column">
                 <h1 class="ui header">{{.article.Title}}</h1>
@@ -49,6 +47,9 @@
         </div>
         <div class="ui divider"></div>
         <div class="article-body">
+            {{if ne .article.TopImage ""}}
+                <img src="{{.article.TopImage}}">
+            {{end}}
             {{.article.Body|safeHTML}}
         </div>
     </div>
