@@ -23,7 +23,9 @@
             {{range .categories}}
                 <ul>
                     <li>
-                        <button type="submit" class="negative ui button" name="id" value="{{ .ID }}" onclick="return confirm('Are you sure?')">削除</button>
+                        <button type="submit" class="negative ui button" name="id" value="{{ .ID }}" onclick="return confirm('Are you sure?')">
+                            <i class="trash icon"></i> Delete
+                        </button>
                         <a href="/admin/category/{{ .ID }}">{{ .Name }}</a>
                     </li>
                 </ul>

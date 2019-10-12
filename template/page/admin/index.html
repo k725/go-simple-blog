@@ -7,25 +7,51 @@
 {{define "content"}}
     <div class="ui main text container">
         <div>
-            <a href="/admin/article/new" class="ui primary button">Create</a>
-            <a href="/admin/category" class="ui button">Category</a>
-            <a href="/admin/profile" class="ui button">Profile</a>
-            <a href="/admin/logout" class="ui negative button">Logout</a>
+            <a href="/admin/article/new" class="ui primary button"><i class="sticky note icon"></i> Create</a>
+            <a href="/admin/category" class="ui button"><i class="list icon"></i> Category</a>
+            <a href="/admin/profile" class="ui button"><i class="user icon"></i> Profile</a>
+            <a href="/admin/logout" class="ui negative button"><i class="sign out alternate icon"></i> Logout</a>
         </div>
+
+        <div class="ui list">
         {{range .articles}}
-            <ul>
-                <li>
-                    <div>
-                        <p><a href="/admin/article/edit/{{.ID}}">{{.Title}}</a></p>
-                        <p>
-                            {{ .CreatedAt|dateToLocal|dateYYYYMMDDHHmm }} /
-                            {{ .UserName }} /
-                            <a href="/admin/category/{{ .CategoryID }}">{{ .CategoryName }}</a>
-                        </p>
+            <div class="item">
+                <div class="ui segment">
+                    <div class="ui list">
+                        <div class="item">
+                            <h2 class="ui header"><a href="/admin/article/edit/{{.ID}}">{{.Title}}</a></p></h2>
+
+                        </div>
+
+                        <div class="item">
+                            <i class="user icon"></i>
+                            <div class="content">
+                                {{.UserName}}
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="clock icon"></i>
+                            <div class="content">
+                                <span
+                                    {{if not (eqTime .CreatedAt .UpdatedAt)}}
+                                        data-tooltip="Updated with {{.UpdatedAt|dateToLocal|dateYYYYMMDDHHmm}}"
+                                    {{end}}
+                                >
+                                    {{.CreatedAt|dateToLocal|dateYYYYMMDDHHmm}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="tag icon"></i>
+                            <div class="content">
+                                <a href="/admin/category/{{.CategoryID}}" class="ui tag label">{{.CategoryName}}</a>
+                            </div>
+                        </div>
                     </div>
-                </li>
-            </ul>
+                </div>
+            </div>
         {{end}}
+        </div>
 
         <div class="ui one column centered grid">
             {{if eq .currentPage 1 }}
