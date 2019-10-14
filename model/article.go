@@ -76,7 +76,7 @@ func GetArticlesByCategoryCount(id int) int {
 	var c int
 	fullArticleQueryBuilder().
 		Model(Article{}).
-		Where("category = ?", id).
+		Where("category_id = ?", id).
 		Count(&c)
 	return c
 }
