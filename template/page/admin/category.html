@@ -20,18 +20,17 @@
 
         <form method="post">
             <input type="hidden" name="mode" value="delete">
+            <div class="ui list">
             {{range .categories}}
-                <ul>
-                    <li>
-                        <button type="submit" class="negative ui button" name="id" value="{{ .ID }}" onclick="return confirm('Are you sure?')">
-                            <i class="trash icon"></i> Delete
-                        </button>
-                        <a href="/admin/category/{{ .ID }}">{{ .Name }}</a>
-                    </li>
-                </ul>
+                <div class="item">
+                    <button type="submit" class="negative ui button" name="id" value="{{ .ID }}" onclick="return confirm('Are you sure?')">
+                        <i class="trash icon"></i> Delete
+                    </button>
+                    <a href="/admin/category/{{ .ID }}">{{ .Name }}</a>
+                </div>
             {{end}}
+            </div>
         </form>
-
     </div>
 {{end}}
 
