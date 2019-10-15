@@ -1,4 +1,11 @@
 {{define "style"}}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.article-body table').forEach((t) => {
+                t.classList.add('ui', 'celled', 'table');
+            });
+        }, false);
+    </script>
 {{end}}
 
 {{define "script"}}
