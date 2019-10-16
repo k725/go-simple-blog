@@ -53,28 +53,32 @@
         {{end}}
         </div>
 
-        <div class="ui one column centered grid">
-            {{if eq .currentPage 1 }}
-                <a class="ui icon button disabled">
-                    <i class="left chevron icon"></i>
-                </a>
-            {{else}}
-                <a href="?page={{sub .currentPage 1}}" class="ui icon button">
-                    <i class="left chevron icon"></i>
-                </a>
-            {{end}}
-
-            <span style="padding-top: 0.3rem;">{{ .currentPage }} / {{ .totalPage }}</span>
-
-            {{if and (eq .totalPage .currentPage) (or (ne .currentPage 1) (eq .totalPage 1))}}
-                <a class="ui icon button disabled">
-                    <i class="right chevron icon"></i>
-                </a>
-            {{else}}
-                <a href="?page={{add .currentPage 1}}" class="ui icon button">
-                    <i class="right chevron icon"></i>
-                </a>
-            {{end}}
+        <div class="ui center aligned grid">
+            <div class="five wide column">
+                {{if eq .currentPage 1 }}
+                    <a class="ui labeled icon button disabled">
+                        <i class="left chevron icon"></i> Next
+                    </a>
+                {{else}}
+                    <a href="?page={{sub .currentPage 1}}" class="ui labeled icon button">
+                        <i class="left chevron icon"></i> Next
+                    </a>
+                {{end}}
+            </div>
+            <div class="five wide column">
+                <span>{{ .currentPage }} / {{ .totalPage }}</span>
+            </div>
+            <div class="five wide column">
+                {{if and (eq .totalPage .currentPage) (or (ne .currentPage 1) (eq .totalPage 1))}}
+                    <a class="ui right labeled icon button disabled">
+                        <i class="right chevron icon"></i> Prev
+                    </a>
+                {{else}}
+                    <a href="?page={{add .currentPage 1}}" class="ui right labeled icon button">
+                        <i class="right chevron icon"></i> Prev
+                    </a>
+                {{end}}
+            </div>
         </div>
     </div>
 {{end}}
