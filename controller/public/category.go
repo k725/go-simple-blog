@@ -1,6 +1,7 @@
 package public
 
 import (
+	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/labstack/echo/v4"
 	"math"
@@ -31,7 +32,7 @@ func GetCategory(c echo.Context) error {
 	a := model.GetArticlesByCategory(id, (p-1)*pageLimit, pageLimit)
 
 	// @todo temp template
-	return c.Render(http.StatusOK, "page/public/index", map[string]interface{}{
+	return echoview.Render(c, http.StatusOK, "page/public/index", echo.Map{
 		"title":       "SimpleBlog",
 		"articles":    a,
 		"categories":  ca,

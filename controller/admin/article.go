@@ -2,6 +2,7 @@ package admin
 
 import (
 	"errors"
+	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/k725/go-simple-blog/service/sess"
@@ -26,7 +27,7 @@ func GetAdminArticles(c echo.Context) error {
 	tp := int(math.Ceil(float64(ac) / pageLimit))
 
 	a := model.GetArticles((p-1)*pageLimit, pageLimit)
-	return c.Render(http.StatusOK, "page/admin/index", map[string]interface{}{
+	return echoview.Render(c, http.StatusOK, "page/admin/index", echo.Map{
 		"title":       "Articles",
 		"articles":    a,
 		"totalPage":   tp,
@@ -36,7 +37,7 @@ func GetAdminArticles(c echo.Context) error {
 
 func GetAdminNewArticle(c echo.Context) error {
 	ca := model.GetAllCategories()
-	return c.Render(http.StatusOK, "page/admin/edit", map[string]interface{}{
+	return echoview.Render(c, http.StatusOK, "page/admin/edit", echo.Map{
 		"title":      "New article",
 		"editable":   false,
 		"categories": ca,
@@ -92,7 +93,7 @@ func GetAdminArticle(c echo.Context) error {
 	if !ok {
 		return echo.NewHTTPError(http.StatusNotFound, "Article not found")
 	}
-	return c.Render(http.StatusOK, "page/admin/article", map[string]interface{}{
+	return echoview.Render(c, http.StatusOK, "page/admin/article", echo.Map{
 		"title":      a.Title + " - SimpleBlog",
 		"article":    a,
 		"editable":   true,

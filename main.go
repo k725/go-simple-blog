@@ -48,7 +48,7 @@ func main() {
 	e.Debug = isDevelop
 	e.HideBanner = true
 	e.HTTPErrorHandler = echoutil.CustomHTTPErrorHandler
-	e.Renderer = echoutil.SetupRender()
+	e.Renderer = echoutil.SetupPublicRender()
 
 	e.Static("/", "public")
 	e.Use(session.Middleware(store))
@@ -77,7 +77,11 @@ func registerRoutes(e *echo.Echo) {
 	e.POST("/admin/login", public.PostAdminLogin)
 
 	// Login area
-	g := e.Group("/admin", customMiddleware.LoginCheck)
+	g := e.Group(
+		"/admin",
+		customMiddleware.LoginCheck,
+		echoutil.SetupAdminRender(),
+	)
 
 	g.GET("/logout", admin.GetAdminLogout)
 	g.GET("/article", admin.GetAdminArticles)

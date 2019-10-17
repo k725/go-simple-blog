@@ -2,6 +2,7 @@ package public
 
 import (
 	"errors"
+	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/gorilla/securecookie"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/k725/go-simple-blog/service/sess"
@@ -20,7 +21,7 @@ func GetAdminLogin(c echo.Context) error {
 		if _, ok := s.Values["user_id"]; ok {
 			return c.Redirect(http.StatusFound, "/admin/article")
 		}
-		return c.Render(http.StatusOK, "page/public/login", p)
+		return echoview.Render(c, http.StatusOK, "page/public/login", p)
 	}
 
 	if err.Error() == securecookie.ErrMacInvalid.Error() {
@@ -28,7 +29,7 @@ func GetAdminLogin(c echo.Context) error {
 			return err
 		}
 		// NOTE: c.Render を最後に呼び出さないとCookieが書き換わらないので😭
-		return c.Render(http.StatusOK, "page/public/login", p)
+		return echoview.Render(c, http.StatusOK, "page/public/login", p)
 	}
 	return err
 }

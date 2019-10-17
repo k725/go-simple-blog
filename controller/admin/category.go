@@ -2,6 +2,7 @@ package admin
 
 import (
 	"errors"
+	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/labstack/echo/v4"
 	"math"
@@ -12,7 +13,7 @@ import (
 
 func GetCategories(c echo.Context) error {
 	ca := model.GetAllCategories()
-	return c.Render(http.StatusOK, "page/admin/category", map[string]interface{}{
+	return echoview.Render(c, http.StatusOK, "page/admin/category", echo.Map{
 		"title":      "Categories",
 		"categories": ca,
 	})
@@ -69,7 +70,7 @@ func GetCategory(c echo.Context) error {
 	tp := int(math.Ceil(float64(ac) / pageLimit))
 
 	a := model.GetArticlesByCategory(id, (p-1)*pageLimit, pageLimit)
-	return c.Render(http.StatusOK, "page/admin/index", map[string]interface{}{
+	return echoview.Render(c, http.StatusOK, "page/admin/index", echo.Map{
 		"title":       "Category",
 		"articles":    a,
 		"totalPage":   tp,

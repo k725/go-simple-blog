@@ -2,6 +2,7 @@ package admin
 
 import (
 	"errors"
+	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/k725/go-simple-blog/service/sess"
@@ -24,7 +25,7 @@ func GetAdminProfile(c echo.Context) error {
 		return errors.New("invalid type")
 	}
 	user := model.GetUserByUserId(uis)
-	return c.Render(http.StatusOK, "page/admin/profile", map[string]interface{}{
+	return echoview.Render(c, http.StatusOK, "page/admin/profile", echo.Map{
 		"user": user,
 	})
 }
