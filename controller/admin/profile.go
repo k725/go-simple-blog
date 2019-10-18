@@ -50,10 +50,10 @@ func PostAdminProfile(c echo.Context) error {
 
 	u := model.User{
 		Model: gorm.Model{
-			ID:        uinf.ID,
+			ID: uinf.ID,
 		},
-		UserID:   c.FormValue("user-id"),
-		Name:     c.FormValue("display-name"),
+		UserID: c.FormValue("user-id"),
+		Name:   c.FormValue("display-name"),
 	}
 
 	if c.FormValue("old-password") != "" && c.FormValue("new-password") != "" {
@@ -68,9 +68,8 @@ func PostAdminProfile(c echo.Context) error {
 		u.Password = pw
 	}
 
-
 	if err := model.UpdateUser(u); err != nil {
-		return err;
+		return err
 	}
 	return c.Redirect(http.StatusFound, "/admin/profile")
 }
