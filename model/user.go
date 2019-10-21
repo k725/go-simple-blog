@@ -16,3 +16,8 @@ func GetUserByUserId(userId string) User {
 		First(&u)
 	return u
 }
+
+func UpdateUser(u User) error {
+	c := GetConnection()
+	return c.Model(&u).Updates(u).Error
+}

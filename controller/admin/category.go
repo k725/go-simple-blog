@@ -2,17 +2,19 @@ package admin
 
 import (
 	"errors"
+	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/labstack/echo/v4"
 	"math"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 func GetCategories(c echo.Context) error {
 	ca := model.GetAllCategories()
-	return c.Render(http.StatusOK, "page/admin/category", map[string]interface{}{
-		"title": "Categories",
+	return echoview.Render(c, http.StatusOK, "page/admin/category", echo.Map{
+		"title":      "Categories",
 		"categories": ca,
 	})
 }
@@ -25,11 +27,11 @@ func PostCategory(c echo.Context) error {
 		if err != nil {
 			return err
 		}
-
-		if !model.HasCategory(idi) {
-
-		}
 		if err := model.DeleteCategory(idi); err != nil {
+			if strings.HasPrefix(err.Error(), "Error 1451:") {
+				c.Logger().Info("Category has articles.")
+				return c.Redirect(http.StatusFound, "/admin/category")
+			}
 			return err
 		}
 		return c.Redirect(http.StatusFound, "/admin/category")
@@ -41,7 +43,7 @@ func PostCategory(c echo.Context) error {
 	}
 
 	ca := model.Category{
-		Name:  cn,
+		Name: cn,
 	}
 	if err := model.InsertCategory(ca); err != nil {
 		return err
@@ -51,7 +53,7 @@ func PostCategory(c echo.Context) error {
 }
 
 func GetCategory(c echo.Context) error {
-	p, err := strconv.Atoi(c.QueryParam("page"));
+	p, err := strconv.Atoi(c.QueryParam("page"))
 	if err != nil || p == 0 {
 		p = 1
 	}
@@ -67,11 +69,11 @@ func GetCategory(c echo.Context) error {
 	ac := model.GetArticlesByCategoryCount(id)
 	tp := int(math.Ceil(float64(ac) / pageLimit))
 
-	a := model.GetArticlesByCategory(id, (p - 1) * pageLimit, pageLimit)
-	return c.Render(http.StatusOK, "page/admin/index", map[string]interface{}{
-		"title": "Category",
-		"articles": a,
-		"totalPage": tp,
+	a := model.GetArticlesByCategory(id, (p-1)*pageLimit, pageLimit)
+	return echoview.Render(c, http.StatusOK, "page/admin/index", echo.Map{
+		"title":       "Category",
+		"articles":    a,
+		"totalPage":   tp,
 		"currentPage": p,
 	})
 }

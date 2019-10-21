@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>{{.title}}</title>
+        {{include "parts/header_import"}}
+        {{template "style" .}}
+        <script>
+            console.log("admin render!")
+        </script>
+    </head>
+    <body>
+        {{template "content" .}}
+        {{include "parts/navigation/footer_navigation"}}
+        {{include "parts/footer_import"}}
+        {{template "script" .}}
+    </body>
+</html>

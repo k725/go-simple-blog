@@ -1,7 +1,11 @@
 <form method="post" class="ui form">
     <div class="field">
         <label>Post title</label>
-        <input type="text" name="title" placeholder="Title" value="{{.article.Title}}">
+        <input type="text" name="title" placeholder="Title" value="{{.article.Title}}" required>
+    </div>
+    <div class="field">
+        <label>Top image</label>
+        <input type="text" name="top-image" placeholder="Image URL" value="{{.article.TopImage}}">
     </div>
     <div class="field">
         <label>Post body</label>

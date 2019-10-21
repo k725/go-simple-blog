@@ -30,5 +30,5 @@ func InsertCategory(a Category) error {
 
 func DeleteCategory(id int) error {
 	c := GetConnection()
-	return c.Where("id = ?", id).Delete(&Category{}).Error
+	return c.Unscoped().Where("id = ?", id).Delete(&Category{}).Error
 }

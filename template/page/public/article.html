@@ -1,7 +1,15 @@
 {{define "style"}}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.article-body table').forEach((t) => {
+                t.classList.add('ui', 'celled', 'table');
+            });
+        }, false);
+    </script>
 {{end}}
 
 {{define "script"}}
+    <script async src="//platform.twitter.com/widgets.js"></script>
 {{end}}
 
 {{define "content"}}
@@ -11,29 +19,55 @@
         <h1 class="ui header">Simple Blog</h1>
         <p>Welcome my blog!</p>
 
-        <h1 class="ui dividing header">{{.article.Title}}</h1>
-
         <div class="ui equal width grid">
-            <div class="column">
-                <div class="ui">
-                    <p>
-                        <a href="/category/{{.article.Category}}" class="ui tag label">{{.article.CategoryName}}</a><br>
-                        Author: {{.article.UserName}}
-                    </p>
+            <div class="row">
+                <div class="ten wide column">
+                    <h1 class="ui header">{{.article.Title}}</h1>
                 </div>
-            </div>
 
-            <div class="column">
-                <div class="ui">
-                    Created: {{.article.CreatedAt|dateToLocal|dateYYYYMMDDHHmm}}
-                    {{if not (eqTime .article.CreatedAt .article.UpdatedAt)}}
-                        <br>Updated: {{.article.UpdatedAt|dateToLocal|dateYYYYMMDDHHmm}}
-                    {{end}}
+                <div class="column">
+                    <div class="ui list">
+                        <div class="item">
+                            <i class="user icon"></i>
+                            <div class="content">
+                                {{.article.UserName}}
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="clock icon"></i>
+                            <div class="content">
+                            <span
+                                {{if not (eqTime .article.CreatedAt .article.UpdatedAt)}}
+                                    data-tooltip="Updated with {{.article.UpdatedAt|dateToLocal|dateYYYYMMDDHHmm}}"
+                                {{end}}
+                            >
+                                {{.article.CreatedAt|dateToLocal|dateYYYYMMDDHHmm}}
+                            </span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <i class="tag icon"></i>
+                            <div class="content">
+                                <a href="/category/{{.article.CategoryID}}" class="ui tag label">{{.article.CategoryName}}</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
         <div class="article-body">
+            {{if ne .article.TopImage ""}}
+                <img src="{{.article.TopImage}}">
+            {{end}}
+
             {{.article.Body|safeHTML}}
+
+            <div class="ui divider"></div>
+
+            <a class="twitter-share-button"
+               href="https://twitter.com/intent/tweet">
+                Tweet</a>
         </div>
     </div>
 {{end}}

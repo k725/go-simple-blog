@@ -4,16 +4,17 @@ import "github.com/jinzhu/gorm"
 
 type Article struct {
 	gorm.Model
-	Title    string `gorm:"not null" sql:"type:text;"`
-	Body     string `gorm:"not null" sql:"type:text;"`
-	Category int    `gorm:"not null"`
-	Author   int    `gorm:"not null"`
+	Title      string `gorm:"not null" sql:"type:text;"`
+	Body       string `gorm:"not null" sql:"type:text;"`
+	TopImage   string `sql:"type:text;"`
+	CategoryID uint   `gorm:"not null"`
+	UserID     uint   `gorm:"not null"`
 }
 
 type ArticleFull struct {
 	Article
 	CategoryName string `gorm:"column:categoryName"`
-	CategoryID   int    `gorm:"column:categoryId"`
+	CategoryID   uint   `gorm:"column:categoryId"`
 	UserName     string `gorm:"column:userName"`
 	UserID       string `gorm:"column:userId"`
 }
@@ -26,8 +27,8 @@ func fullArticleQueryBuilder() *gorm.DB {
 	return GetConnection().
 		Table("articles").
 		Select(sel).
-		Joins("LEFT JOIN categories ON articles.category = categories.id").
-		Joins("LEFT JOIN users ON articles.author = users.id").
+		Joins("LEFT JOIN categories ON articles.category_id = categories.id").
+		Joins("LEFT JOIN users ON articles.user_id = users.id").
 		Order("created_at desc")
 }
 
@@ -39,16 +40,6 @@ func GetArticle(id int) (ArticleFull, bool) {
 		First(&a)
 
 	return a, !r.RecordNotFound()
-}
-
-// GetAllArticles ...
-// @todo fix
-func GetAllArticles() []ArticleFull {
-	var a []ArticleFull
-	fullArticleQueryBuilder().
-		Where("articles.deleted_at IS NULL").
-		Scan(&a)
-	return a
 }
 
 func GetArticles(offset, limit int) []ArticleFull {
@@ -73,7 +64,7 @@ func GetArticlesCount() int {
 func GetArticlesByCategory(id, offset, limit int) []ArticleFull {
 	var a []ArticleFull
 	fullArticleQueryBuilder().
-		Where("category = ?", id).
+		Where("category_id = ?", id).
 		Where("articles.deleted_at IS NULL").
 		Offset(offset).
 		Limit(limit).
@@ -85,7 +76,7 @@ func GetArticlesByCategoryCount(id int) int {
 	var c int
 	fullArticleQueryBuilder().
 		Model(Article{}).
-		Where("category = ?", id).
+		Where("category_id = ?", id).
 		Count(&c)
 	return c
 }

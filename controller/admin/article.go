@@ -3,6 +3,7 @@ package admin
 import (
 	"errors"
 	"fmt"
+	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/k725/go-simple-blog/service/sess"
@@ -10,6 +11,7 @@ import (
 	"math"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 const (
@@ -17,7 +19,7 @@ const (
 )
 
 func GetAdminArticles(c echo.Context) error {
-	p, err := strconv.Atoi(c.QueryParam("page"));
+	p, err := strconv.Atoi(c.QueryParam("page"))
 	if err != nil || p == 0 {
 		p = 1
 	}
@@ -28,19 +30,19 @@ func GetAdminArticles(c echo.Context) error {
 	s, err := sess.GetSession(c)
 	fmt.Println(s.Flashes())
 	_ = s.Save(c.Request(), c.Response().Writer)
-	a := model.GetArticles((p - 1) * pageLimit, pageLimit)
-	return c.Render(http.StatusOK, "page/admin/index", map[string]interface{}{
-		"title": "Articles",
-		"articles": a,
-		"totalPage": tp,
+	a := model.GetArticles((p-1)*pageLimit, pageLimit)
+	return echoview.Render(c, http.StatusOK, "page/admin/index", echo.Map{
+		"title":       "Articles",
+		"articles":    a,
+		"totalPage":   tp,
 		"currentPage": p,
 	})
 }
 
 func GetAdminNewArticle(c echo.Context) error {
 	ca := model.GetAllCategories()
-	return c.Render(http.StatusOK, "page/admin/edit", map[string]interface{}{
-		"title": "New article",
+	return echoview.Render(c, http.StatusOK, "page/admin/edit", echo.Map{
+		"title":      "New article",
 		"editable":   false,
 		"categories": ca,
 		"article":    model.ArticleFull{},
@@ -51,9 +53,6 @@ func PostAdminNewArticle(c echo.Context) error {
 	ca, err := strconv.Atoi(c.FormValue("category"))
 	if err != nil {
 		return err
-	}
-	if !model.HasCategory(ca) {
-		return errors.New("invalid category")
 	}
 
 	s, err := sess.GetSession(c)
@@ -74,13 +73,18 @@ func PostAdminNewArticle(c echo.Context) error {
 	_ = s.Save(c.Request(), c.Response().Writer)
 
 	err = model.InsertArticle(model.Article{
-		Title:    c.FormValue("title"),
-		Body:     c.FormValue("body"),
-		Category: ca,
-		Author:   int(u.ID),
+		Title:      c.FormValue("title"),
+		Body:       c.FormValue("body"),
+		TopImage:   c.FormValue("top-image"),
+		CategoryID: uint(ca),
+		UserID:     u.ID,
 	})
 	if err != nil {
-		return nil
+		if strings.HasPrefix(err.Error(), "Error 1452:") {
+			c.Logger().Info("Invalid category id")
+			return c.Redirect(http.StatusFound, "/admin/article")
+		}
+		return err
 	}
 	return c.Redirect(http.StatusFound, "/admin/article")
 }
@@ -96,8 +100,8 @@ func GetAdminArticle(c echo.Context) error {
 	if !ok {
 		return echo.NewHTTPError(http.StatusNotFound, "Article not found")
 	}
-	return c.Render(http.StatusOK, "page/admin/article", map[string]interface{}{
-		"title": a.Title + " - SimpleBlog",
+	return echoview.Render(c, http.StatusOK, "page/admin/article", echo.Map{
+		"title":      a.Title + " - SimpleBlog",
 		"article":    a,
 		"editable":   true,
 		"categories": ca,
@@ -122,19 +126,21 @@ func PostAdminArticle(c echo.Context) error {
 	if err != nil {
 		return err
 	}
-	if !model.HasCategory(ca) {
-		return errors.New("invalid category")
-	}
 	err = model.UpdateArticle(model.Article{
 		Model: gorm.Model{
 			ID: uint(id),
 		},
-		Title:    c.FormValue("title"),
-		Body:     c.FormValue("body"),
-		Category: ca,
+		Title:      c.FormValue("title"),
+		Body:       c.FormValue("body"),
+		TopImage:   c.FormValue("top-image"),
+		CategoryID: uint(ca),
 	})
 	if err != nil {
-		return nil
+		if strings.HasPrefix(err.Error(), "Error 1452:") {
+			c.Logger().Info("Invalid category id")
+			return c.Redirect(http.StatusFound, "/admin/article")
+		}
+		return err
 	}
 	return c.Redirect(http.StatusFound, "/admin/article")
 }
