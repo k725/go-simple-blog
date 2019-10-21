@@ -21,6 +21,8 @@ func GetAdminLogin(c echo.Context) error {
 		if _, ok := s.Values["user_id"]; ok {
 			return c.Redirect(http.StatusFound, "/admin/article")
 		}
+		p["flash"] = s.Flashes()
+		sess.SaveSession(c, map[string]interface{}{})
 		return echoview.Render(c, http.StatusOK, "page/public/login", p)
 	}
 
@@ -28,6 +30,7 @@ func GetAdminLogin(c echo.Context) error {
 		if err := sess.ForceLogoutSession(c); err != nil {
 			return err
 		}
+
 		// NOTE: c.Render を最後に呼び出さないとCookieが書き換わらないので😭
 		return echoview.Render(c, http.StatusOK, "page/public/login", p)
 	}
@@ -43,6 +46,7 @@ func PostAdminLogin(c echo.Context) error {
 
 	user := model.GetUserByUserId(id)
 	if err := util.PasswordVerify(user.Password, pw); err != nil {
+		sess.SaveFlash(c, "Missing username or password")
 		c.Logger().Warn(err)
 		return c.Redirect(http.StatusFound, "/admin/login")
 	}

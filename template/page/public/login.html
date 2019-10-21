@@ -49,8 +49,22 @@
                     <button type="submit" class="ui fluid large teal submit button">Login</button>
                 </div>
 
-                <div class="ui error message"></div>
+
             </form>
+
+            {{if .flash}}
+            <div class="ui error message">
+                <i class="close icon"></i>
+                <div class="header">
+                    Error
+                </div>
+                <ul class="list">
+                    {{range .flash}}
+                    <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+            {{end}}
         </div>
     </div>
 {{end}}
