@@ -2,7 +2,6 @@ package admin
 
 import (
 	"errors"
-	"fmt"
 	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
@@ -28,14 +27,23 @@ func GetAdminArticles(c echo.Context) error {
 	tp := int(math.Ceil(float64(ac) / pageLimit))
 
 	s, err := sess.GetSession(c)
-	fmt.Println(s.Flashes())
-	_ = s.Save(c.Request(), c.Response().Writer)
+	if err != nil {
+		c.Error(err)
+		return err
+	}
+	eF := s.Flashes("error")
+	iF := s.Flashes("info")
+	if err := sess.SaveSession(c, map[string]interface{}{}); err != nil {
+		c.Error(err)
+	}
 	a := model.GetArticles((p-1)*pageLimit, pageLimit)
 	return echoview.Render(c, http.StatusOK, "page/admin/index", echo.Map{
 		"title":       "Articles",
 		"articles":    a,
 		"totalPage":   tp,
 		"currentPage": p,
+		"errorFlash":  eF,
+		"infoFlash":   iF,
 	})
 }
 
@@ -81,6 +89,9 @@ func PostAdminNewArticle(c echo.Context) error {
 	})
 	if err != nil {
 		if strings.HasPrefix(err.Error(), "Error 1452:") {
+			if err := sess.SaveErrorFlash(c, "Invalid category id"); err != nil {
+				c.Logger().Warn(err)
+			}
 			c.Logger().Info("Invalid category id")
 			return c.Redirect(http.StatusFound, "/admin/article")
 		}

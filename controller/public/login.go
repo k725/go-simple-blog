@@ -21,8 +21,11 @@ func GetAdminLogin(c echo.Context) error {
 		if _, ok := s.Values["user_id"]; ok {
 			return c.Redirect(http.StatusFound, "/admin/article")
 		}
-		p["flash"] = s.Flashes()
-		sess.SaveSession(c, map[string]interface{}{})
+		p["errorFlash"] = s.Flashes("error")
+		p["infoFlash"] = s.Flashes("info")
+		if err := sess.SaveSession(c, map[string]interface{}{}); err != nil {
+			c.Error(err)
+		}
 		return echoview.Render(c, http.StatusOK, "page/public/login", p)
 	}
 
@@ -46,8 +49,10 @@ func PostAdminLogin(c echo.Context) error {
 
 	user := model.GetUserByUserId(id)
 	if err := util.PasswordVerify(user.Password, pw); err != nil {
-		sess.SaveFlash(c, "Missing username or password")
 		c.Logger().Warn(err)
+		if err := sess.SaveErrorFlash(c, "Missing username or password"); err != nil {
+			c.Logger().Warn(err)
+		}
 		return c.Redirect(http.StatusFound, "/admin/login")
 	}
 

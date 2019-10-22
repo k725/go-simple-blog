@@ -34,12 +34,20 @@ func SaveSession(c echo.Context, d map[string]interface{}) error {
 	return sess.Save(c.Request(), c.Response())
 }
 
-func SaveFlash(c echo.Context, d string) error {
+func SaveErrorFlash(c echo.Context, d string) error {
+	return saveFlash(c, d, "error")
+}
+
+func SaveInfoFlash(c echo.Context, d string) error {
+	return saveFlash(c, d, "info")
+}
+
+func saveFlash(c echo.Context, d string, key ...string) error {
 	sess, err := GetSession(c)
 	if err != nil {
 		return err
 	}
-	sess.AddFlash(d)
+	sess.AddFlash(d, key...)
 	return sess.Save(c.Request(), c.Response())
 }
 

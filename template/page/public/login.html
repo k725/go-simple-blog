@@ -52,18 +52,29 @@
 
             </form>
 
-            {{if .flash}}
+            {{if .errorFlash}}
             <div class="ui error message">
-                <i class="close icon"></i>
                 <div class="header">
                     Error
                 </div>
                 <ul class="list">
-                    {{range .flash}}
+                    {{range .errorFlash}}
                     <li>{{.}}</li>
                     {{end}}
                 </ul>
             </div>
+            {{end}}
+            {{if .infoFlash}}
+                <div class="ui success message">
+                    <div class="header">
+                        Error
+                    </div>
+                    <ul class="list">
+                        {{range .infoFlash}}
+                            <li>{{.}}</li>
+                        {{end}}
+                    </ul>
+                </div>
             {{end}}
         </div>
     </div>
