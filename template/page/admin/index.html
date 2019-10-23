@@ -13,6 +13,31 @@
             <a href="/admin/logout" class="ui negative button"><i class="sign out alternate icon"></i> Logout</a>
         </div>
 
+        {{if .errorFlash}}
+            <div class="ui error message">
+                <div class="header">
+                    Error
+                </div>
+                <ul class="list">
+                    {{range .errorFlash}}
+                        <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+        {{end}}
+        {{if .infoFlash}}
+            <div class="ui success message">
+                <div class="header">
+                    Info
+                </div>
+                <ul class="list">
+                    {{range .infoFlash}}
+                        <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+        {{end}}
+
         <div class="ui list">
         {{range .articles}}
             <div class="item">
