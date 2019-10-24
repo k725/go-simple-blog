@@ -24,9 +24,18 @@ func GetAdminProfile(c echo.Context) error {
 	if !ok {
 		return errors.New("invalid type")
 	}
+
+	eF := s.Flashes("error")
+	iF := s.Flashes("info")
+	if err := sess.SaveSession(c, map[string]interface{}{}); err != nil {
+		c.Error(err)
+	}
+
 	user := model.GetUserByUserId(uis)
 	return echoview.Render(c, http.StatusOK, "page/admin/profile", echo.Map{
 		"user": user,
+		"errorFlash": eF,
+		"infoFlash": iF,
 	})
 }
 
@@ -69,7 +78,14 @@ func PostAdminProfile(c echo.Context) error {
 	}
 
 	if err := model.UpdateUser(u); err != nil {
-		return err
+		c.Logger().Warn(err)
+		if err := sess.SaveErrorFlash(c, "Failed update user info."); err != nil {
+			c.Logger().Warn(err)
+		}
+		return c.Redirect(http.StatusFound, "/admin/profile")
+	}
+	if err := sess.SaveInfoFlash(c, "Success update."); err != nil {
+		c.Logger().Warn(err)
 	}
 	return c.Redirect(http.StatusFound, "/admin/profile")
 }
