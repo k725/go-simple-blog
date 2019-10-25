@@ -56,6 +56,10 @@ func PostAdminLogin(c echo.Context) error {
 		return c.Redirect(http.StatusFound, "/admin/login")
 	}
 
+	if err := sess.SaveInfoFlash(c, "Successful login"); err != nil {
+		c.Logger().Warn(err)
+	}
+
 	v := map[string]interface{}{
 		"user_id": user.UserID,
 	}
