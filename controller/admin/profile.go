@@ -67,12 +67,20 @@ func PostAdminProfile(c echo.Context) error {
 
 	if c.FormValue("old-password") != "" && c.FormValue("new-password") != "" {
 		if err := util.PasswordVerify(uinf.Password, c.FormValue("old-password")); err != nil {
-			return err
+			c.Logger().Warn(err)
+			if err := sess.SaveErrorFlash(c, "Missing old password"); err != nil {
+				c.Logger().Warn(err)
+			}
+			return c.Redirect(http.StatusFound, "/admin/profile")
 		}
 
 		pw, err := util.PasswordHash(c.FormValue("new-password"))
 		if err != nil {
-			return err
+			c.Logger().Warn(err)
+			if err := sess.SaveErrorFlash(c, "Failed hash new password"); err != nil {
+				c.Logger().Warn(err)
+			}
+			return c.Redirect(http.StatusFound, "/admin/profile")
 		}
 		u.Password = pw
 	}
@@ -86,6 +94,11 @@ func PostAdminProfile(c echo.Context) error {
 	}
 	if err := sess.SaveInfoFlash(c, "Success update."); err != nil {
 		c.Logger().Warn(err)
+	}
+	if c.FormValue("old-password") != "" && c.FormValue("new-password") != "" {
+		if err := sess.SaveInfoFlash(c, "Password update."); err != nil {
+			c.Logger().Warn(err)
+		}
 	}
 	return c.Redirect(http.StatusFound, "/admin/profile")
 }
