@@ -97,6 +97,9 @@ func PostAdminNewArticle(c echo.Context) error {
 		}
 		return err
 	}
+	if err := sess.SaveInfoFlash(c, "Created article"); err != nil {
+		c.Logger().Warn(err)
+	}
 	return c.Redirect(http.StatusFound, "/admin/article")
 }
 
@@ -128,7 +131,15 @@ func PostAdminArticle(c echo.Context) error {
 	mode := c.FormValue("mode")
 	if mode == "delete" {
 		if err := model.DeleteArticle(id); err != nil {
-			return err
+			c.Logger().Warn(err)
+			if err := sess.SaveErrorFlash(c, "Failed delete article"); err != nil {
+				c.Logger().Warn(err)
+			}
+			return c.Redirect(http.StatusFound, "/admin/article")
+		}
+
+		if err := sess.SaveInfoFlash(c, "Successful delete article"); err != nil {
+			c.Logger().Warn(err)
 		}
 		return c.Redirect(http.StatusFound, "/admin/article")
 	}

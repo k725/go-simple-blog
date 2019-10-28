@@ -18,6 +18,32 @@
             </div>
         </form>
 
+        {{if .errorFlash}}
+            <div class="ui error message">
+                <div class="header">
+                    Error
+                </div>
+                <ul class="list">
+                    {{range .errorFlash}}
+                        <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+        {{end}}
+        {{if .infoFlash}}
+            <div class="ui success message">
+                <div class="header">
+                    Info
+                </div>
+                <ul class="list">
+                    {{range .infoFlash}}
+                        <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+        {{end}}
+
+
         <form method="post">
             <input type="hidden" name="mode" value="delete">
             <div class="ui list">
