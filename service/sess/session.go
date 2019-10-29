@@ -51,6 +51,20 @@ func saveFlash(c echo.Context, d string, key ...string) error {
 	return sess.Save(c.Request(), c.Response())
 }
 
+func GetFlash(c echo.Context, key string) []interface{} {
+	s, err := GetSession(c)
+	if err != nil {
+		c.Logger().Error(err)
+		return []interface{}{}
+	}
+	f := s.Flashes(key)
+	if err := SaveSession(c, echo.Map{}); err != nil {
+		c.Logger().Error(err)
+		return []interface{}{}
+	}
+	return f
+}
+
 func ForceLogoutSession(c echo.Context) error {
 	s, err := session.Get(cookieName, c)
 	if err != nil {

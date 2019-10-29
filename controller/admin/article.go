@@ -26,33 +26,22 @@ func GetAdminArticles(c echo.Context) error {
 	ac := model.GetArticlesCount()
 	tp := int(math.Ceil(float64(ac) / pageLimit))
 
-	s, err := sess.GetSession(c)
-	if err != nil {
-		c.Error(err)
-		return err
-	}
-	eF := s.Flashes("error")
-	iF := s.Flashes("info")
-	if err := sess.SaveSession(c, map[string]interface{}{}); err != nil {
-		c.Error(err)
-	}
 	a := model.GetArticles((p-1)*pageLimit, pageLimit)
 	return echoview.Render(c, http.StatusOK, "page/admin/index", echo.Map{
 		"title":       "Articles",
 		"articles":    a,
 		"totalPage":   tp,
 		"currentPage": p,
-		"errorFlash":  eF,
-		"infoFlash":   iF,
+		"errorFlash":  sess.GetFlash(c, "error"),
+		"infoFlash":   sess.GetFlash(c, "info"),
 	})
 }
 
 func GetAdminNewArticle(c echo.Context) error {
-	ca := model.GetAllCategories()
 	return echoview.Render(c, http.StatusOK, "page/admin/edit", echo.Map{
 		"title":      "New article",
 		"editable":   false,
-		"categories": ca,
+		"categories": model.GetAllCategories(),
 		"article":    model.ArticleFull{},
 	})
 }
@@ -103,9 +92,9 @@ func PostAdminNewArticle(c echo.Context) error {
 func GetAdminArticle(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return err
+		c.Logger().Warn(err)
+		return echo.NewHTTPError(http.StatusNotFound, "Invalid article ID")
 	}
-	ca := model.GetAllCategories()
 
 	a, ok := model.GetArticle(id)
 	if !ok {
@@ -115,14 +104,15 @@ func GetAdminArticle(c echo.Context) error {
 		"title":      a.Title + " - SimpleBlog",
 		"article":    a,
 		"editable":   true,
-		"categories": ca,
+		"categories": model.GetAllCategories(),
 	})
 }
 
 func PostAdminArticle(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		return err
+		c.Logger().Warn(err)
+		return echo.NewHTTPError(http.StatusNotFound, "Invalid article ID")
 	}
 
 	mode := c.FormValue("mode")
