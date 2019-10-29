@@ -77,9 +77,6 @@ func PostAdminNewArticle(c echo.Context) error {
 	}
 	u := model.GetUserByUserId(uis)
 
-	s.AddFlash("hogehoge")
-	_ = s.Save(c.Request(), c.Response().Writer)
-
 	err = model.InsertArticle(model.Article{
 		Title:      c.FormValue("title"),
 		Body:       c.FormValue("body"),
