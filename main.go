@@ -94,7 +94,6 @@ func registerRoutes(e *echo.Echo) {
 
 	g.GET("/article/edit/:id", admin.GetAdminArticle)
 	g.POST("/article/edit/:id", admin.PostAdminArticle)
-	g.DELETE("/article/edit/:id", admin.DeleteAdminArticle)
 
 	g.GET("/profile", admin.GetAdminProfile)
 	g.POST("/profile", admin.PostAdminProfile)

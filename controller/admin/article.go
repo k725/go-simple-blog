@@ -153,7 +153,3 @@ func PostAdminArticle(c echo.Context) error {
 	}
 	return c.Redirect(http.StatusFound, "/admin/article")
 }
-
-func DeleteAdminArticle(c echo.Context) error {
-	return c.String(http.StatusOK, "DeleteAdminArticle")
-}
