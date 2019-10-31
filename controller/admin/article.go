@@ -49,7 +49,11 @@ func GetAdminNewArticle(c echo.Context) error {
 func PostAdminNewArticle(c echo.Context) error {
 	ca, err := strconv.Atoi(c.FormValue("category"))
 	if err != nil {
-		return err
+		c.Logger().Warn(err)
+		if err := sess.SaveErrorFlash(c, "Invalid format category id"); err != nil {
+			c.Logger().Warn(err)
+		}
+		return c.Redirect(http.StatusFound, "/admin/article")
 	}
 
 	s, err := sess.GetSession(c)
@@ -133,7 +137,11 @@ func PostAdminArticle(c echo.Context) error {
 
 	ca, err := strconv.Atoi(c.FormValue("category"))
 	if err != nil {
-		return err
+		c.Logger().Warn(err)
+		if err := sess.SaveErrorFlash(c, "Invalid format category id"); err != nil {
+			c.Logger().Warn(err)
+		}
+		return c.Redirect(http.StatusFound, "/admin/article")
 	}
 	err = model.UpdateArticle(model.Article{
 		Model: gorm.Model{
