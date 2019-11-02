@@ -21,11 +21,8 @@ func GetAdminLogin(c echo.Context) error {
 		if _, ok := s.Values["user_id"]; ok {
 			return c.Redirect(http.StatusFound, "/admin/article")
 		}
-		p["errorFlash"] = s.Flashes("error")
-		p["infoFlash"] = s.Flashes("info")
-		if err := sess.SaveSession(c, map[string]interface{}{}); err != nil {
-			c.Error(err)
-		}
+		p["errorFlash"] = sess.GetFlash(c, "error")
+		p["infoFlash"] = sess.GetFlash(c, "info")
 		return echoview.Render(c, http.StatusOK, "page/public/login", p)
 	}
 

@@ -15,21 +15,11 @@ import (
 func GetCategories(c echo.Context) error {
 	ca := model.GetAllCategories()
 
-	s, err := sess.GetSession(c)
-	if err != nil {
-		return err
-	}
-	eF := s.Flashes("error")
-	iF := s.Flashes("info")
-	if err := sess.SaveSession(c, map[string]interface{}{}); err != nil {
-		c.Error(err)
-	}
-
 	return echoview.Render(c, http.StatusOK, "page/admin/category", echo.Map{
 		"title":      "Categories",
 		"categories": ca,
-		"errorFlash": eF,
-		"infoFlash": iF,
+		"errorFlash": sess.GetFlash(c, "error"),
+		"infoFlash":  sess.GetFlash(c, "info"),
 	})
 }
 

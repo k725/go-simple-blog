@@ -25,17 +25,11 @@ func GetAdminProfile(c echo.Context) error {
 		return errors.New("invalid type")
 	}
 
-	eF := s.Flashes("error")
-	iF := s.Flashes("info")
-	if err := sess.SaveSession(c, map[string]interface{}{}); err != nil {
-		c.Error(err)
-	}
-
 	user := model.GetUserByUserId(uis)
 	return echoview.Render(c, http.StatusOK, "page/admin/profile", echo.Map{
 		"user": user,
-		"errorFlash": eF,
-		"infoFlash": iF,
+		"errorFlash": sess.GetFlash(c, "error"),
+		"infoFlash":  sess.GetFlash(c, "info"),
 	})
 }
 
