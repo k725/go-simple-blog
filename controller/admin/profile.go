@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"errors"
 	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
@@ -12,20 +11,12 @@ import (
 )
 
 func GetAdminProfile(c echo.Context) error {
-	s, err := sess.GetSession(c)
+	id, err := sess.GetSessionValue(c, "user_id")
 	if err != nil {
+		c.Logger().Warn(err)
 		return err
 	}
-	ui, ok := s.Values["user_id"]
-	if !ok {
-		return errors.New("invalid user id")
-	}
-	uis, ok := ui.(string)
-	if !ok {
-		return errors.New("invalid type")
-	}
-
-	user := model.GetUserByUserId(uis)
+	user := model.GetUserByUserId(id)
 	return echoview.Render(c, http.StatusOK, "page/admin/profile", echo.Map{
 		"user": user,
 		"errorFlash": sess.GetFlash(c, "error"),
@@ -34,23 +25,13 @@ func GetAdminProfile(c echo.Context) error {
 }
 
 func PostAdminProfile(c echo.Context) error {
-	s, err := sess.GetSession(c)
+	id, err := sess.GetSessionValue(c, "user_id")
 	if err != nil {
-		return err
+		c.Logger().Warn(err)
+		return c.Redirect(http.StatusFound, "/admin/profile")
 	}
 
-	ui, ok := s.Values["user_id"]
-	if !ok {
-		return errors.New("invalid user id")
-	}
-
-	uis, ok := ui.(string)
-	if !ok {
-		return errors.New("invalid type")
-	}
-
-	uinf := model.GetUserByUserId(uis)
-
+	uinf := model.GetUserByUserId(id)
 	u := model.User{
 		Model: gorm.Model{
 			ID: uinf.ID,

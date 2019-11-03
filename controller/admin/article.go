@@ -1,7 +1,6 @@
 package admin
 
 import (
-	"errors"
 	"github.com/foolin/goview/supports/echoview-v4"
 	"github.com/jinzhu/gorm"
 	"github.com/k725/go-simple-blog/model"
@@ -56,19 +55,12 @@ func PostAdminNewArticle(c echo.Context) error {
 		return c.Redirect(http.StatusFound, "/admin/article")
 	}
 
-	s, err := sess.GetSession(c)
+	id, err := sess.GetSessionValue(c, "user_id")
 	if err != nil {
-		return err
+		c.Logger().Warn(err)
+		return c.Redirect(http.StatusFound, "/admin/article")
 	}
-	ui, ok := s.Values["user_id"]
-	if !ok {
-		return errors.New("invalid user id")
-	}
-	uis, ok := ui.(string)
-	if !ok {
-		return errors.New("invalid type")
-	}
-	u := model.GetUserByUserId(uis)
+	u := model.GetUserByUserId(id)
 
 	err = model.InsertArticle(model.Article{
 		Title:      c.FormValue("title"),

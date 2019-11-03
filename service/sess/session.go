@@ -1,6 +1,7 @@
 package sess
 
 import (
+	"errors"
 	"github.com/gorilla/sessions"
 	"github.com/k725/go-simple-blog/config"
 	"github.com/labstack/echo-contrib/session"
@@ -21,6 +22,22 @@ func GetSession(c echo.Context) (*sessions.Session, error) {
 		HttpOnly: true,
 	}
 	return s, nil
+}
+
+func GetSessionValue(c echo.Context, key string) (string, error) {
+	s, err  := GetSession(c)
+	if err != nil {
+		return "", err
+	}
+	ui, ok := s.Values[key]
+	if !ok {
+		return "", errors.New(key + "are not found")
+	}
+	uis, ok := ui.(string)
+	if !ok {
+		return "", errors.New("invalid type")
+	}
+	return uis, nil
 }
 
 func SaveSession(c echo.Context, d map[string]interface{}) error {
