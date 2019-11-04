@@ -1,4 +1,8 @@
 {{define "style"}}
+{{end}}
+
+{{define "script"}}
+    <script async src="//platform.twitter.com/widgets.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.article-body table').forEach((t) => {
@@ -6,10 +10,6 @@
             });
         }, false);
     </script>
-{{end}}
-
-{{define "script"}}
-    <script async src="//platform.twitter.com/widgets.js"></script>
 {{end}}
 
 {{define "content"}}
