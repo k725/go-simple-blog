@@ -21,10 +21,19 @@ func GetArticle(c echo.Context) error {
 	}
 
 	ca := model.GetAllCategories()
+	//orig := a.Body
 	a.Body = markdown.Render(a.Body)
 	return echoview.Render(c, http.StatusOK, "page/public/article", echo.Map{
 		"title":      a.Title + " - SimpleBlog",
 		"article":    a,
 		"categories": ca,
+		"ogp":        map[string]interface{} {
+			"title": a.Title,
+			"type": "article",
+			"url": "https://example.com/article/" + strconv.Itoa(id),
+			"thumbnail": "https://example.com/article.png",
+			"site_name": "SimpleBlog",
+			"description": a.Body,
+		},
 	})
 }
