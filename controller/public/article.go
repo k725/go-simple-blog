@@ -37,6 +37,6 @@ func GetArticle(c echo.Context) error {
 			"thumbnail": "https://example.com/article.png",
 			"site_name": "SimpleBlog",
 			"description": ogpDesc,
-		},//
+		},
 	})
 }
