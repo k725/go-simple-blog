@@ -6,12 +6,7 @@
 
 {{define "content"}}
     <div class="ui main text container">
-        <div>
-            <a href="/admin/article/new" class="ui primary button"><i class="sticky note icon"></i> Create</a>
-            <a href="/admin/category" class="ui button"><i class="list icon"></i> Category</a>
-            <a href="/admin/profile" class="ui button"><i class="user icon"></i> Profile</a>
-            <a href="/admin/logout" class="ui negative button"><i class="sign out alternate icon"></i> Logout</a>
-        </div>
+        {{include "parts/navigation/admin_navigation"}}
 
         {{if .errorFlash}}
             <div class="ui error message">
@@ -44,7 +39,7 @@
                 <div class="ui segment">
                     <div class="ui list">
                         <div class="item">
-                            <h2 class="ui header"><a href="/admin/article/edit/{{.ID}}">{{.Title}}</a></p></h2>
+                            <h2 class="ui header"><p><a href="/admin/article/edit/{{.ID}}">{{.Title}}</a></p></h2>
 
                         </div>
 
