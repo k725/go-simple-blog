@@ -14,15 +14,15 @@
         <div class="ui divided items">
             {{range .articles}}
                 <div class="item">
-                    <div class="image">
+                    <a href="/article/{{.ID}}" class="image">
                         {{if ne .TopImage ""}}
                             <img src="{{.TopImage}}">
                         {{else}}
                             <img src="/image/article.png">
                         {{end}}
-                    </div>
+                    </a>
                     <div class="content">
-                        <p class="header">{{.Title}}</p>
+                        <p class="header"><a href="/article/{{.ID}}">{{.Title}}</a></p>
                         <div class="meta">
                             <div class="ui list">
                                 <div class="item">
