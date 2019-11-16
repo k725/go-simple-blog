@@ -24,7 +24,8 @@ func GetCategory(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusNotFound, "Category not found")
 	}
 
-	ca := model.GetAllCategories()
+	ca := model.GetCategoryById(id)
+
 
 	ac := model.GetArticlesByCategoryCount(id)
 	tp := int(math.Ceil(float64(ac) / pageLimit))
@@ -33,10 +34,11 @@ func GetCategory(c echo.Context) error {
 
 	// @todo temp template
 	return echoview.Render(c, http.StatusOK, "page/public/index", echo.Map{
-		"title":       "SimpleBlog",
-		"articles":    a,
-		"categories":  ca,
-		"totalPage":   tp,
-		"currentPage": p,
+		"title":        "SimpleBlog",
+		"articles":     a,
+		"categories":   model.GetAllCategories(),
+		"totalPage":    tp,
+		"currentPage":  p,
+		"categoryName": ca.Name,
 	})
 }
