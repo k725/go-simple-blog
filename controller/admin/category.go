@@ -85,10 +85,12 @@ func GetCategory(c echo.Context) error {
 	tp := int(math.Ceil(float64(ac) / pageLimit))
 
 	a := model.GetArticlesByCategory(id, (p-1)*pageLimit, pageLimit)
+	ca := model.GetCategoryById(id)
 	return echoview.Render(c, http.StatusOK, "page/admin/index", echo.Map{
 		"title":       "Category",
 		"articles":    a,
 		"totalPage":   tp,
 		"currentPage": p,
+		"categoryName": ca.Name,
 	})
 }

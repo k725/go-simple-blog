@@ -8,6 +8,10 @@
     <div class="ui main text container">
         {{include "parts/navigation/admin_navigation"}}
 
+        {{if .categoryName}}
+            <h2 class="ui header">Category: {{ .categoryName }}</h2>
+        {{end}}
+
         {{if .errorFlash}}
             <div class="ui error message">
                 <div class="header">
