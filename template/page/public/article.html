@@ -1,7 +1,16 @@
 {{define "style"}}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.css" crossorigin="anonymous" />
+    <style>
+        .article-body hr {
+            border: none;
+            border-top: 1px solid rgba(34,36,38,.15);
+        }
+    </style>
 {{end}}
 
 {{define "script"}}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" crossorigin="anonymous"></script>
     <script async src="//platform.twitter.com/widgets.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -9,6 +18,22 @@
                 t.classList.add('ui', 'celled', 'table');
             });
         }, false);
+
+        $(function()
+        {
+            $('.article-body img').each(function()
+            {
+                $(this).wrap(
+                    $('<a></a>').attr({
+                        href: $(this).attr('src'),
+                        target: '_blank',
+                        class: 'fancybox',
+                        rel: 'fancybox'
+                    })
+                );
+            });
+            $('.fancybox').fancybox();
+        });
     </script>
 {{end}}
 
@@ -57,6 +82,8 @@
         </div>
 
         <div class="article-body">
+            <div class="ui divider"></div>
+
             {{if ne .article.TopImage ""}}
                 <img src="{{.article.TopImage}}">
             {{end}}

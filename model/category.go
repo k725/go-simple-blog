@@ -13,6 +13,12 @@ func GetAllCategories() []Category {
 	return c
 }
 
+func GetCategoryById(id int) Category {
+	var c Category
+	GetConnection().Where("id = ?", id).Find(&c)
+	return c
+}
+
 func HasCategory(id int) bool {
 	var c = 0
 	GetConnection().
