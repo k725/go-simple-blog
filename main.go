@@ -97,4 +97,6 @@ func registerRoutes(e *echo.Echo) {
 
 	g.GET("/profile", admin.GetAdminProfile)
 	g.POST("/profile", admin.PostAdminProfile)
+
+	g.GET("/setting", admin.GetAdminSetting)
 }
