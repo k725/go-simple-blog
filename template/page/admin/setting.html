@@ -9,6 +9,40 @@
         {{include "parts/navigation/admin_navigation"}}
 
         <h1>Settings</h1>
+
+        {{if .errorFlash}}
+            <div class="ui error message">
+                <div class="header">
+                    Error
+                </div>
+                <ul class="list">
+                    {{range .errorFlash}}
+                        <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+        {{end}}
+        {{if .infoFlash}}
+            <div class="ui success message">
+                <div class="header">
+                    Info
+                </div>
+                <ul class="list">
+                    {{range .infoFlash}}
+                        <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+        {{end}}
+
+        <form method="post" class="ui form">
+            <div class="field">
+                <label>Google analytics</label>
+                <input type="text" name="google-analytics" placeholder="UA-000000-0" value="{{ .setting.googleAnalytics }}">
+            </div>
+
+            <button class="ui positive button" type="submit">Save</button>
+        </form>
     </div>
 {{end}}
 
