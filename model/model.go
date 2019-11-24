@@ -18,6 +18,7 @@ func setupTables(con *gorm.DB) {
 		&Article{},
 		&User{},
 		&Category{},
+		&Setting{},
 	)
 	con.Model(&Article{}).
 		AddForeignKey("category_id", "categories(id)", "RESTRICT", "RESTRICT").
