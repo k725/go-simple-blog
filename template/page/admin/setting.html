@@ -37,6 +37,11 @@
 
         <form method="post" class="ui form">
             <div class="field">
+                <label>Blog name</label>
+                <input type="text" name="blog-name" placeholder="SimpleBlog" value="{{ index . "blog-name" }}">
+            </div>
+
+            <div class="field">
                 <label>Google Analytics</label>
                 <input type="text" name="google-analytics" placeholder="UA-000000-0" value="{{ index . "google-analytics" }}">
             </div>
