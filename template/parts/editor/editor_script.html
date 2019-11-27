@@ -1,4 +1,11 @@
 <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 <script>
-    new EasyMDE({element: document.getElementById('editor')});
+    new EasyMDE({
+        element: document.getElementById('editor'),
+        uploadImage: true,
+        imageMaxSize: 1024 * 1024 * 3,
+        imageUploadFunction: (file) => {
+            console.log(file);
+        },
+    });
 </script>
