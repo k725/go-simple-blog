@@ -4,8 +4,6 @@
         element: document.getElementById('editor'),
         uploadImage: true,
         imageMaxSize: 1024 * 1024 * 3,
-        imageUploadFunction: (file) => {
-            console.log(file);
-        },
+        imageUploadEndpoint: '/admin/upload',
     });
 </script>
