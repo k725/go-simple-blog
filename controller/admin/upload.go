@@ -1,6 +1,8 @@
 package admin
 
 import (
+	"crypto/md5"
+	"fmt"
 	"github.com/labstack/echo/v4"
 	"io"
 	"net/http"
@@ -19,7 +21,8 @@ func PostUploadFile(c echo.Context) error {
 	}
 	defer src.Close()
 
-	dstPath := filepath.Join("public", "image", "article", file.Filename) // @todo fix
+	hashName := fmt.Sprintf("%x", md5.Sum([]byte(file.Filename)))
+	dstPath := filepath.Join("public", "image", "article", hashName)
 	dst, err := os.Create(dstPath)
 	if err != nil {
 		return err
@@ -33,7 +36,7 @@ func PostUploadFile(c echo.Context) error {
 	return c.JSON(http.StatusOK, &echo.Map{
 		"status": true,
 		"data": echo.Map{
-			"filePath":	"image/article/" + file.Filename,
+			"filePath":	"image/article/" + hashName,
 		},
 	})
 }
