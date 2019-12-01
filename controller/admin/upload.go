@@ -3,6 +3,7 @@ package admin
 import (
 	"crypto/md5"
 	"fmt"
+	"github.com/k725/go-simple-blog/util"
 	"github.com/labstack/echo/v4"
 	"io"
 	"net/http"
@@ -20,6 +21,12 @@ func PostUploadFile(c echo.Context) error {
 		return err
 	}
 	defer src.Close()
+
+	if !util.IsValidImageFormat(src) {
+		return c.JSON(http.StatusOK, &echo.Map{
+			"status": false,
+		})
+	}
 
 	hashName := fmt.Sprintf("%x", md5.Sum([]byte(file.Filename)))
 	dstPath := filepath.Join("public", "image", "article", hashName)
