@@ -9,11 +9,12 @@ import (
 	"mime/multipart"
 )
 
-func IsValidImageFormat(in multipart.File) bool {
-	if _, _, err := image.DecodeConfig(in); err != nil {
+func IsValidImageFormat(in multipart.File) (string, bool) {
+	_, ext, err := image.DecodeConfig(in)
+	if err != nil {
 		_, _ = in.Seek(0, io.SeekStart)
-		return false
+		return "", false
 	}
 	_, _ = in.Seek(0, io.SeekStart)
-	return true
+	return ext, true
 }
