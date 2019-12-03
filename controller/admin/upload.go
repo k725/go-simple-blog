@@ -2,6 +2,7 @@ package admin
 
 import (
 	"crypto/md5"
+	"errors"
 	"fmt"
 	"github.com/k725/go-simple-blog/util"
 	"github.com/labstack/echo/v4"
@@ -21,6 +22,10 @@ func PostUploadFile(c echo.Context) error {
 		return err
 	}
 	defer src.Close()
+
+	if file.Size > 2145728 { // @todo temp
+		return errors.New("file too large")
+	}
 
 	ext, ok := util.IsValidImageFormat(src)
 	if !ok {
