@@ -8,6 +8,9 @@ type Setting struct {
 	Value string `sql:"type:text;"`
 }
 
+// 何か違う気がする
+var Settings []Setting
+
 func GetSettingValues() []Setting {
 	var s []Setting
 	GetConnection().Model(Setting{}).Scan(&s)

@@ -1,6 +1,7 @@
 package templateutil
 
 import (
+	"github.com/k725/go-simple-blog/model"
 	"html/template"
 	"time"
 	"unicode/utf8"
@@ -44,4 +45,13 @@ func add(v1, v2 int) int {
 
 func sub(v1, v2 int) int {
 	return v1 - v2
+}
+
+func setting(key string) string {
+	for _, v := range model.Settings {
+		if v.Key == key {
+			return v.Value
+		}
+	}
+	return ""
 }

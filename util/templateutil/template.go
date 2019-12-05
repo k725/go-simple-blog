@@ -14,4 +14,5 @@ var TemplateFuncMap = template.FuncMap{
 	"safeHTML":         safeHTML,
 	"add":              add,
 	"sub":              sub,
+	"setting":          setting,
 }

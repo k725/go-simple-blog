@@ -44,6 +44,8 @@ func main() {
 	}
 	defer store.Close()
 
+	model.Settings = model.GetSettingValues()
+
 	e := echo.New()
 	e.Debug = isDevelop
 	e.HideBanner = true
