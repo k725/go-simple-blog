@@ -27,6 +27,7 @@ func PostAdminSetting(c echo.Context) error {
 		}
 		_ = model.UpdateSettingValue(setting)
 	}
+	model.Settings = model.GetSettingValues()
 
 	return c.Redirect(http.StatusFound, "/admin/setting")
 }

@@ -21,5 +21,15 @@
         {{include "parts/navigation/footer_navigation"}}
         {{include "parts/footer_import"}}
         {{template "script" .}}
+        {{if ne (setting "google-analytics") ""}}
+            <!-- Google Analytics -->
+            <script>
+                window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+                ga('create', '{{ setting "google-analytics" }}', 'auto');
+                ga('send', 'pageview');
+            </script>
+            <script async src='https://www.google-analytics.com/analytics.js'></script>
+            <!-- End Google Analytics -->
+        {{end}}
     </body>
 </html>
