@@ -27,7 +27,7 @@ func GetArticle(c echo.Context) error {
 	ogpDesc :=  strings.Replace(string([]rune(strip.StripTags(a.Body))[:160]), "\n", "", -1)
 
 	return echoview.Render(c, http.StatusOK, "page/public/article", echo.Map{
-		"title":      a.Title + " - SimpleBlog",
+		"title":      a.Title,
 		"article":    a,
 		"categories": ca,
 		"ogp":        map[string]interface{} {
