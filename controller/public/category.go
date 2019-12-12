@@ -34,7 +34,7 @@ func GetCategory(c echo.Context) error {
 
 	// @todo temp template
 	return echoview.Render(c, http.StatusOK, "page/public/index", echo.Map{
-		"title":        "SimpleBlog",
+		"title":        ca.Name,
 		"articles":     a,
 		"categories":   model.GetAllCategories(),
 		"totalPage":    tp,

@@ -44,6 +44,8 @@ func main() {
 	}
 	defer store.Close()
 
+	model.Settings = model.GetSettingValues()
+
 	e := echo.New()
 	e.Debug = isDevelop
 	e.HideBanner = true
@@ -97,6 +99,9 @@ func registerRoutes(e *echo.Echo) {
 
 	g.GET("/profile", admin.GetAdminProfile)
 	g.POST("/profile", admin.PostAdminProfile)
+
+	g.GET("/setting", admin.GetAdminSetting)
+	g.POST("/setting", admin.PostAdminSetting)
 
 	g.POST("/upload", admin.PostUploadFile)
 }

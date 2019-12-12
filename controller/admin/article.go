@@ -97,7 +97,7 @@ func GetAdminArticle(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusNotFound, "Article not found")
 	}
 	return echoview.Render(c, http.StatusOK, "page/admin/article", echo.Map{
-		"title":      a.Title + " - SimpleBlog",
+		"title":      a.Title,
 		"article":    a,
 		"editable":   true,
 		"categories": model.GetAllCategories(),

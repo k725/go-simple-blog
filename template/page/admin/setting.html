@@ -1,0 +1,53 @@
+{{define "style"}}
+{{end}}
+
+{{define "script"}}
+{{end}}
+
+{{define "content"}}
+    <div class="ui main text container">
+        {{include "parts/navigation/admin_navigation"}}
+
+        <h1>Settings</h1>
+
+        {{if .errorFlash}}
+            <div class="ui error message">
+                <div class="header">
+                    Error
+                </div>
+                <ul class="list">
+                    {{range .errorFlash}}
+                        <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+        {{end}}
+        {{if .infoFlash}}
+            <div class="ui success message">
+                <div class="header">
+                    Info
+                </div>
+                <ul class="list">
+                    {{range .infoFlash}}
+                        <li>{{.}}</li>
+                    {{end}}
+                </ul>
+            </div>
+        {{end}}
+
+        <form method="post" class="ui form">
+            <div class="field">
+                <label>Blog name</label>
+                <input type="text" name="blog-name" placeholder="SimpleBlog" value="{{ index . "blog-name" }}">
+            </div>
+
+            <div class="field">
+                <label>Google Analytics</label>
+                <input type="text" name="google-analytics" placeholder="UA-000000-0" value="{{ index . "google-analytics" }}">
+            </div>
+
+            <button class="ui positive button" type="submit">Save</button>
+        </form>
+    </div>
+{{end}}
+
