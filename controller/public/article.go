@@ -24,7 +24,12 @@ func GetArticle(c echo.Context) error {
 
 	ca := model.GetAllCategories()
 	a.Body = markdown.Render(a.Body)
-	ogpDesc :=  strings.Replace(string([]rune(strip.StripTags(a.Body))[:160]), "\n", "", -1)
+
+	desc := []rune(strip.StripTags(a.Body))
+	if len(desc) >= 160 {
+		desc = desc[:160]
+	}
+	ogpDesc :=  strings.Replace(string(desc), "\n", "", -1)
 
 	return echoview.Render(c, http.StatusOK, "page/public/article", echo.Map{
 		"title":      a.Title,
