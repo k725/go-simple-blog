@@ -22,3 +22,11 @@ func UpdateSettingValue(s Setting) error {
 	return c.Model(&s).Where(Setting{Key: s.Key}).Assign(Setting{Value: s.Value}).FirstOrCreate(&s).Error
 }
 
+func GetSettingValue(key, def string) string {
+	for _, v := range Settings {
+		if v.Key == key {
+			return v.Value
+		}
+	}
+	return def
+}

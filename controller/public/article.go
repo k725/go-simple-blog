@@ -5,7 +5,6 @@ import (
 	"github.com/grokify/html-strip-tags-go"
 	"github.com/k725/go-simple-blog/model"
 	"github.com/k725/go-simple-blog/service/markdown"
-	"github.com/k725/go-simple-blog/util"
 	"github.com/labstack/echo/v4"
 	"net/http"
 	"strconv"
@@ -39,9 +38,9 @@ func GetArticle(c echo.Context) error {
 		"ogp":        map[string]interface{} {
 			"title": a.Title,
 			"type": "article",
-			"url": "https://example.com/article/" + strconv.Itoa(id),
-			"thumbnail": "https://example.com/article.png",
-			"site_name": util.GetSettingValue("blog-name", ""),
+			"url": model.GetSettingValue("site-url", "") + "/article/" + strconv.Itoa(id),
+			"thumbnail": model.GetSettingValue("site-url", "") + "/article.png",
+			"site_name": model.GetSettingValue("blog-name", ""),
 			"description": ogpDesc,
 		},
 	})
