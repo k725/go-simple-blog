@@ -9,7 +9,7 @@
 
     <div class="ui main text container">
         <h1 class="ui header">{{setting "blog-name"}}</h1>
-        <p>Welcome my blog!</p>
+        <p>{{setting "blog-description"}}</p>
 
         {{if .categoryName}}
             <h2 class="ui header">Category: {{ .categoryName }}</h2>
