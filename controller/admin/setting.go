@@ -5,7 +5,6 @@ import (
 	"github.com/k725/go-simple-blog/model"
 	"github.com/labstack/echo/v4"
 	"net/http"
-	"strings"
 )
 
 func GetAdminSetting(c echo.Context) error {
@@ -20,10 +19,16 @@ func GetAdminSetting(c echo.Context) error {
 
 func PostAdminSetting(c echo.Context) error {
 	f, _ := c.FormParams()
-	for k, v := range f {
+	allowValues := []string {
+		"blog-name",
+		"blog-description",
+		"google-analytics",
+		"site-url",
+	}
+	for _, v := range allowValues {
 		setting := model.Setting{
-			Key:   k,
-			Value: strings.Join(v, ""),
+			Key:   v,
+			Value: f.Get(v),
 		}
 		_ = model.UpdateSettingValue(setting)
 	}
