@@ -1,6 +1,6 @@
 module github.com/k725/go-simple-blog
 
-go 1.24.0
+go 1.25.0
 
 require (
 	github.com/foolin/goview v0.2.0
@@ -13,7 +13,7 @@ require (
 	github.com/russross/blackfriday/v2 v2.0.1
 	github.com/srinathgs/mysqlstore v0.0.0-20170818123135-4f803440ed5b
 	github.com/stretchr/testify v1.7.0
-	golang.org/x/crypto v0.45.0
+	golang.org/x/crypto v0.51.0
 )
 
 require (
@@ -30,9 +30,9 @@ require (
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
-	golang.org/x/net v0.47.0 // indirect
-	golang.org/x/sys v0.38.0 // indirect
-	golang.org/x/text v0.31.0 // indirect
+	golang.org/x/net v0.55.0 // indirect
+	golang.org/x/sys v0.45.0 // indirect
+	golang.org/x/text v0.37.0 // indirect
 	golang.org/x/time v0.0.0-20201208040808-7e3f01d25324 // indirect
 	google.golang.org/appengine v1.6.2 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
