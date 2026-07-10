@@ -13,7 +13,7 @@ require (
 	github.com/russross/blackfriday/v2 v2.0.1
 	github.com/srinathgs/mysqlstore v0.0.0-20170818123135-4f803440ed5b
 	github.com/stretchr/testify v1.7.0
-	golang.org/x/crypto v0.51.0
+	golang.org/x/crypto v0.52.0
 )
 
 require (
